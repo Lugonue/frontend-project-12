@@ -4,7 +4,7 @@
   "description": "[![Actions Status](https://github.com/Lugonue/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Lugonue/frontend-project-12/actions)",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build --prefix frontend",
+    "build": "npm ci && npm run build --prefix frontend",
     "start": "npx start-server -s ./frontend/build"
   },
   "author": "",
