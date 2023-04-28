@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+//components
+import HomePage from './components/HomePage';
+import Login from './components/Login';
+import NotFound from './components/NotFound';
+
+//context
+import AuthContext from './contex/authContex.js';
+
 
 function App() {
+  const [auth, setAuth] = useState(false);
+  const value = {
+    authorized: auth,
+    setAuth: setAuth
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={value}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 

@@ -1,0 +1,10 @@
+.homePageChat {
+  min-height: 100vh;
+  background: rgb(201, 223, 201);
+  border-radius: 30px;
+}
+
+.chatFrame{
+  min-height: 50vh;
+  margin-bottom: 20px;
+}
