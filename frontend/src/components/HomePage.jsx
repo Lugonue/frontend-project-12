@@ -1,25 +1,28 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../contex/authContex';
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios';
 
-import { setChannels } from '../slices/channelsSlice';
+import { setActiveChannel, setChannels } from '../slices/channelsSlice';
 import { setMessages } from '../slices/messagesSlice';
 import MessagesList from './MessagesList';
+import ChatFrame from './ChatFrame';
+import InputMessage from './ui/InputMessage';
 
-import '../styles/homePage.css';
+
 
 const HomePage = () => {
 
-  const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const auth = useContext(AuthContext);
-  const channels = useSelector(state => state.channels);
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const channels = useSelector(state => state.channels);
+
+  const token = localStorage.getItem('token');
+  const isAuthorized = useSelector(state => state.userState.authorized);
+
 
   useEffect(() => {
-    if (!token && !auth.authorized) {
+    if (!token && !isAuthorized) {
       navigate('/login');
     } else {
       const fetchChanels = async () => {
@@ -28,7 +31,11 @@ const HomePage = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        // console.log(data.channels[0]);
+
         dispatch(setChannels(data.channels));
+        dispatch(setActiveChannel(data.channels[0]));
         dispatch(setMessages(data.messages));
       }
       fetchChanels();
@@ -37,28 +44,43 @@ const HomePage = () => {
   }, [])
 
   useEffect(() => {
-    console.log(channels);
+    // console.log(channels);
   }, [channels])
+
   return (
-    <div className="container homePageChat">
-      <h1 className='text-center mt-5'>Home Page</h1>
-      <div className="row justify-content-center mt-5 chatFrame">
-        <div className="col-2 bg-secondary" id="channels">
-          <h3>Channels</h3>
-          <ul className=''>
-          {channels.channels.map(channel => <li key={channel.id}>{channel.name}</li>)}
-          </ul>
+    <div className="container  vh-100">
+
+      <div className="row">
+        <div className="container">
+          <div className="d-flex justify-content-between mt-3 mb-3">
+            <h4>Hexlet-chat</h4>
+            <button type='button' className='btn btn-primary'>Выйти</button>
+          </div>
         </div>
-        <div className="col-8 bg-light d-flex flex-column justify-content-between">
-          <MessagesList />
-          <div className="mt-5">
-            <form className='d-flex p-2'>
-              <input type="text"
-               className="form-control"
-               placeholder="Enter message"
-               />
-              <button type="submit" className="btn btn-primary">Send</button>
-            </form>
+      </div>
+      <div className="row rounded justify-content-center mt-5 chatFrame" style={{ height: '50vh' }}>
+        <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex" id="channels">
+          <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
+            <b>Каналы</b>
+            <button type='button' className='p-0 text-primary btn btn-group-vertical'>
+              +
+            </button>
+          </div>
+          <ul className='nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block'>
+            {channels.channels.map(channel => (
+              <li className='nav-item w-100' key={channel.id}>
+                <button type='button' key={channel.id} className="w-100 rounded-0 text-start btn"><span className='me-1'>#</span> {channel.name}</button>
+              </li>
+            )
+            )}
+          </ul>
+
+        </div>
+
+        <div className="col p-0 h-100">
+          <ChatFrame />
+          <div className="mt-auto">
+            <InputMessage />
           </div>
         </div>
       </div>

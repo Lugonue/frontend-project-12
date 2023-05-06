@@ -1,18 +1,20 @@
-import '../styles/login.css';
 import * as yup from 'yup';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../contex/authContex';
+import { useDispatch } from 'react-redux';
+import '../styles/login.css';
 
+
+import { setAuthorized, setCurrentUser } from '../slices/stateSlice';
 
 
 const Login = () => {
-  
-  const { setAuth } = useContext(AuthContext);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const schema = yup.object().shape({ //valudation shema for formik
     name: yup.string().required('Name is required'),
@@ -37,13 +39,20 @@ const Login = () => {
         const username = values.name;
         const password = values.password;
         const response = await axios.post('/api/v1/login', { username, password });
+
+        //сохраняем токен полученный от сервера в локальное хранилище 
         localStorage.setItem('token', response.data.token);
+
         setResponsState({
           status: false,
           message: '',
         })
-        setAuth(true);
+
+        //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
+        dispatch(setAuthorized());
+        dispatch(setCurrentUser({ name: response.data.username }));
         navigate('/');
+
       } catch (error) {
         setResponsState({
           status: true,
