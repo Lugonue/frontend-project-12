@@ -4,10 +4,9 @@ import socket from "../utils/webSocket";
 
 import {addMessage} from "../slices/messagesSlice";
 
-const Header = () => {
+const Header = ({messageCount}) => {
 
   const channelName = useSelector(state => state.channels.activeChannel.name)
-  const messageCount = useSelector(state => state.messages.entities.length)
  
 
   return (
@@ -34,11 +33,11 @@ const ChatFrame = () => {
 
   return (
     <>
-    <Header/>
+    <Header messageCount={messages.length}/>
     <div className="w-100 h-100">
       {messages.map(message => (
-        <div key={message.id} className="d-flex justify-content-center p-2">
-          <p>{message.body}</p>
+        <div key={message.id} className="d-flex justify-content-start px-2">
+          <p><b>{message.username}:</b> {message.body}</p>
         </div>
       ))}
     </div>

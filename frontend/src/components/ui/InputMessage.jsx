@@ -14,6 +14,7 @@ const InputMessage = () => {
       message: '',
     },
     onSubmit: (values) => {
+      if (values.message.length === 0) return;
         const message = {
           body: values.message,
           channelId,
