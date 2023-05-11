@@ -20,10 +20,8 @@ const InputMessage = () => {
           channelId,
           username: 'admin',
         };
-        
         sendToServer(message);
-
-        formik.values.message = '';
+        
     },
   })
 
@@ -31,6 +29,8 @@ const InputMessage = () => {
     await socket.emit('newMessage', message, (response) => {
       if (response.status !== 'ok') {
         sendToServer(message)
+      } else {
+        formik.resetForm();
       }
     });
   }

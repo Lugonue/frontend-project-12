@@ -8,9 +8,6 @@ import HomePage from './components/HomePage';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
 
-//context
-import AuthContext from './contex/authContex.js';
-
 
 function App() {
   const [auth, setAuth] = useState(false);
@@ -19,7 +16,6 @@ function App() {
     setAuth: setAuth
   }
   return (
-    <AuthContext.Provider value={value}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -27,7 +23,6 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
-    </AuthContext.Provider>
   );
 }
 
