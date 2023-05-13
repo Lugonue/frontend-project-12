@@ -5,10 +5,10 @@ import axios from 'axios';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import '../styles/login.css';
+import '../../styles/login.css';
 
 
-import { setAuthorized, setCurrentUser } from '../slices/stateSlice';
+import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
 
 
 const Login = () => {

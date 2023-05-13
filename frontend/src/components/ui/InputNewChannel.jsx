@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import socket from '../../utils/webSocket';
-import { addNewChannel } from '../../slices/channelsSlice';
+import { addNewChannel, setActiveChannel } from '../../slices/channelsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -31,6 +31,7 @@ const InputNewChannel = ({closeHandler}) => {
             sendToServer(channelName)
           } else {
            dispatch(addNewChannel(response.data));
+           dispatch(setActiveChannel(response.data));
            closeHandler();
            formik.values.error = '';
            formik.resetForm();
