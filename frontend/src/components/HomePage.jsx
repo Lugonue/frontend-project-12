@@ -6,16 +6,21 @@ import { Modal, Button, ButtonGroup } from "react-bootstrap";
 
 import { setActiveChannel, setChannels } from "../slices/channelsSlice";
 import { setMessages } from "../slices/messagesSlice";
+
 import ChatFrame from "./ui/ChatFrame";
 import InputMessage from "./ui/InputMessage";
 import InputNewChannel from "./ui/InputNewChannel";
 import EditChannelDropDown from "./ui/EditChannelDropDown";
+import Header from "./ui/Header";
+
 import socket from "../utils/webSocket";
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const channels = useSelector((state) => state.channels);
+  
 
   const token = localStorage.getItem("token");
   const isAuthorized = useSelector((state) => state.userState.authorized);
@@ -26,7 +31,7 @@ const HomePage = () => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    if (!token && !isAuthorized) {
+    if (!token || !isAuthorized) {
       navigate("/login");
     } else {
       const fetchChanels = async () => {
@@ -44,25 +49,15 @@ const HomePage = () => {
       };
       fetchChanels();
     }
-  }, []);
+  }, [isAuthorized]);
 
   return (
     <div className="h-100">
       <div className="container shadow-sm h-100">
-        <div className="row h-100 bg-white flex-md-row">  
+        <div className="row h-100 bg-white flex-md-row">
           <div className="d-flex flex-column h-100">
-            
-            <div className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
-              <div className="container">
-                <div className="d-flex justify-content-between mt-3 mb-3 w-100">
-                  <h4>Hexlet-chat</h4>
-                  <button type="button" className="btn btn-primary">
-                    Выйти
-                  </button>
-                </div>
-              </div>
-              
-            </div>
+
+            <Header />
 
             <div className="container h-100 my-4 overflow-hidden rounded shadow">
               <div className="row h-100 bg-white flex-md-row">

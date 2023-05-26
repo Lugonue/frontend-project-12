@@ -6,3 +6,6 @@
 
 https://frontend-project-12-production-08d0.up.railway.app/
 
+
+### Start server
+npx start-server

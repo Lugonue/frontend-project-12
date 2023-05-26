@@ -4,17 +4,16 @@ const initialState = {
   authorized: false,
   token: '',
   currentUser: {
-    name: '',
-    id: '',
+    name: false,
   }
 };
 
-export const slice = createSlice({
+export const stateSlice = createSlice({
   name: 'state',
   initialState,
   reducers: {
-    setAuthorized: (state) => {
-      state.authorized = true;
+    setAuthorized: (state, action) => {
+      state.authorized = action.payload;
     },
     setToken: (state, action) => {
       state.token = action.payload;
@@ -28,5 +27,6 @@ export const slice = createSlice({
 
 
 
-export  const { setAuthorized, setToken, setCurrentUser } = slice.actions;
-export default slice.reducer;
+export const { setAuthorized, setToken, setCurrentUser } = stateSlice.actions;
+export const { actions } = stateSlice;
+export default stateSlice.reducer;

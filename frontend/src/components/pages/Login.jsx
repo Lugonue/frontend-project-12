@@ -2,13 +2,14 @@ import * as yup from 'yup';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import '../../styles/login.css';
 
 
 import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
+import Header from '../ui/Header';
 
 
 const Login = () => {
@@ -49,54 +50,72 @@ const Login = () => {
         })
 
         //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
-        dispatch(setAuthorized());
+        dispatch(setAuthorized(true));
         dispatch(setCurrentUser({ name: response.data.username }));
         navigate('/');
 
       } catch (error) {
-        setResponsState({
-          status: true,
-          message: error.message,
-        })
+        if (error.response.status === 401)
+          setResponsState({
+            status: true,
+            message: 'Неверный логин или пароль',
+          })
       }
     },
   })
 
   return (
-    <div className="container-md login-conteiner">
-      <Form onSubmit={formik.handleSubmit} className='w-50'>
-        <Form.Group className="mb-3" >
-          <Form.Label>Input your name</Form.Label>
-          <Form.Control
-            type="text"
-            id="name"
-            placeholder="Enter name"
-            onChange={formik.handleChange}
-            value={formik.values.name}
-          />
-          {formik.errors.name && formik.touched.name ? (
-            <div className="error text-danger">{formik.errors.name}</div>
-          ) : null}
-        </Form.Group>
+    <div className="container h-100">
+      <div className="row h-100 align-items-start">
+        <Header />
+        <div className="col-4 text-center">
+          <h4 className="mb-5">Нет аккаунта?</h4>
+          <Button
+            variant="outline-secondary"
+            onClick={() => navigate('/signup')}
+          >
+            Зарегистрироваться
+          </Button>
+        </div>
+        <Form onSubmit={formik.handleSubmit} className='col-5 shadow-sm p-4'>
+          <Form.Text>Введите имя пользователя и пароль</Form.Text>
+          <Form.Group className="mb-3" >
+            <Form.Label className='text-muted'>Input your name</Form.Label>
+            <Form.Control
+              type="text"
+              id="name"
+              placeholder="Enter name"
+              onChange={formik.handleChange}
+              value={formik.values.name}
+            />
+            {formik.errors.name && formik.touched.name ? (
+              <div className="error text-danger">{formik.errors.name}</div>
+            ) : null}
+          </Form.Group>
 
-        <Form.Group className="mb-3" >
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            id="password"
-            placeholder="Password"
-            onChange={formik.handleChange}
-            value={formik.values.password}
-          />
-          {formik.errors.password && formik.touched.password ? (
-            <div className="error text-danger">{formik.errors.password}</div>
-          ) : null}
-        </Form.Group>
-        <Button variant="secondary" type="submit">
-          Submit
-        </Button>
-        {responsState && <div className='alert text-danger'>{responsState.message}</div>}
-      </Form>
+          <Form.Group className="mb-3" >
+            <Form.Label className='text-muted'> Input your password</Form.Label>
+            <Form.Control
+              type="password"
+              id="password"
+              placeholder="Password"
+              onChange={formik.handleChange}
+              value={formik.values.password}
+            />
+            {formik.errors.password && formik.touched.password ? (
+              <div className="error text-danger">{formik.errors.password}</div>
+            ) : null}
+          </Form.Group>
+          <Form.Group className="w-100 text-end">
+            <Button variant="secondary" type="submit">
+              Submit
+            </Button>
+          </Form.Group>
+          {responsState.status && <div className='alert text-danger'>{responsState.message}</div>}
+        </Form>
+
+      </div>
+
     </div>
 
   )
