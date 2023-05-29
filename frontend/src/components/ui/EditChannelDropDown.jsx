@@ -39,7 +39,7 @@ const EditChannelDropDown = ({ channel, toast, t, dispatch }) => {
     if (inputRef.current !== null) {
       inputRef.current.focus();
     }
-    
+
   })
 
   return (
@@ -53,13 +53,13 @@ const EditChannelDropDown = ({ channel, toast, t, dispatch }) => {
         <Dropdown.Menu>
           <Dropdown.Item
             onClick={() => handleShow("renameChannel")}
-            // href="#/action-1"
+          // href="#/action-1"
           >
-            Переименовать
+            {t("Переименовать")}
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() => handleShow("removeChannel")}
-            // href="#/action-2"
+          // href="#/action-2"
           >
             Удалить
           </Dropdown.Item>
@@ -74,20 +74,20 @@ const EditChannelDropDown = ({ channel, toast, t, dispatch }) => {
           <Form
             onSubmit={(event) => {
               event.preventDefault();
-              
+
               const renameChannelServer = () => {
                 socket.emit("renameChannel", {
                   id: channel.id, name: channelName
                 }, (response) => {
                   if (response.status !== 'ok') {
                     renameChannelServer();
-                    toast.error( t("Не удалось переименовать канал!"));
+                    toast.error(t("Не удалось переименовать канал!"));
                   } else {
                     dispatch(renameChannel({ id: channel.id, name: channelName }));
                     handleClose();
-                    toast.success(t("Канал успешно переименован!"));
+                    toast.success(t("Канал переименован"));
                   }
-                 })
+                })
               }
               renameChannelServer();
             }}
@@ -97,7 +97,6 @@ const EditChannelDropDown = ({ channel, toast, t, dispatch }) => {
               ref={inputRef}
               type="text"
               value={channelName}
-              autoFocus
               onChange={(event) => {
                 setChannelName(event.target.value);
               }}
@@ -135,8 +134,8 @@ const EditChannelDropDown = ({ channel, toast, t, dispatch }) => {
                         handleClose();
                         dispatch(removeChannel(channel.id));
                         dispatch(removeMessagesInCHannel(channel.id));
-                        dispatch(setActiveChannel({name: 'general', id: 1}));
-                        toast.success("Канал успешно удален!");
+                        dispatch(setActiveChannel({ name: 'general', id: 1 }));
+                        toast.success(t("Канал удалён"));
                       }
                     }
                   );

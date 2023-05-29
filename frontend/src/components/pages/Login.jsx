@@ -83,7 +83,9 @@ const Login = ({ toast }) => {
           </Button>
         </div>
         <Form onSubmit={formik.handleSubmit} className='col-5 shadow-sm p-4'>
-          <Form.Text>{t("логин форма")}</Form.Text>
+          <div className="text-center">
+          <Form.Text className="fs-1 text-black">{t("логин форма")}</Form.Text>
+          </div>
           <Form.Group className="mb-3" >
             <Form.Label className='text-muted'>{t('введите имя')}</Form.Label>
             <Form.Control
@@ -113,10 +115,10 @@ const Login = ({ toast }) => {
           </Form.Group>
           <Form.Group className="w-100 text-end">
             <Button variant="secondary" type="submit">
-              {t('Подтвердить')}
+              {t('Войти')}
             </Button>
           </Form.Group>
-          {responsState.status && <div className='alert text-danger'>{responsState.message}</div>}
+          {/* {responsState.status && <div className='alert text-danger'>{responsState.message}</div>} */}
         </Form>
 
       </div>

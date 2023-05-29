@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 
 
 
-const InputNewChannel = ({ closeHandler, toast }) => {
+const InputNewChannel = ({ closeHandler, toast, t }) => {
   const dispatch = useDispatch();
 
   const input = useRef(null);
@@ -28,6 +28,7 @@ const InputNewChannel = ({ closeHandler, toast }) => {
       const sendToServer = async (channelName) => {
         await socket.emit('newChannel', { name: values.channelName }, (response) => {
           if (response.status !== 'ok') {
+            toast.error(t("Ошибка соединения"))
             sendToServer(channelName)
           } else {
             dispatch(addNewChannel(response.data));
@@ -35,7 +36,7 @@ const InputNewChannel = ({ closeHandler, toast }) => {
             closeHandler();
             formik.values.error = '';
             formik.resetForm();
-            toast("Channel is added!");
+            toast(t("Канал создан"));
           }
         })
       }

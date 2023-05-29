@@ -121,7 +121,7 @@ const HomePage = ({toast}) => {
           <Modal.Title>{t("Добавить канал")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <InputNewChannel toast={toast} closeHandler={handleClose} />
+          <InputNewChannel toast={toast} closeHandler={handleClose} t={t} />
         </Modal.Body>
       </Modal>
 

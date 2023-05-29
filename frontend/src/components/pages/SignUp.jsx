@@ -1,26 +1,21 @@
 import { useFormik } from "formik";
 import { Form, Button, Image } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
 import * as yup from 'yup';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-
 import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
 import Header from "../ui/Header";
-import { useTranslation } from "react-i18next";
 
-
-const SignUp = ({ toast }) => {
+const SignUp = ({ toast, t }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const schema = yup.object().shape({ //valudation shema for formik
-    username: yup.string().required('Name is required').min(3, 'Name must be at least 3 characters long').max(20, 'Name must be at most 20 characters long'),
-    password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters long'),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+    username: yup.string().required('Name is required').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
+    password: yup.string().required('Password is required').min(6, 'Не менее 6 символов'),
+    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Пароли должны совпадать'),
   });
 
 
@@ -42,6 +37,7 @@ const SignUp = ({ toast }) => {
           const { data } = await axios.post('/api/v1/signup', request);
 
           // регистрация нового пользователя. Добавляем токен и переходим на главную страницу
+          localStorage.setItem('token', data.token);
           dispatch(setAuthorized(true));
           dispatch(setCurrentUser({ name: data.username }));
           toast.success(t('Регистрация прошла успешно'));
@@ -117,7 +113,7 @@ const SignUp = ({ toast }) => {
                         variant="primary"
                         onClick={formik.handleSubmit}
                       >
-                        Отправить
+                        {t("Отправить")}
                       </Button>
                     </Form.Group>
                   </Form>

@@ -1,7 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+
 import React from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
+import { useTranslation } from "react-i18next";
+
+
 
 import './i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -23,11 +26,10 @@ const rollbarConfig = {
 
 
 function App() {
-  // const [auth, setAuth] = useState(false);
-  // const value = {
-  //   authorized: auth,
-  //   setAuth: setAuth
-  // }
+
+  const { t } = useTranslation();
+  
+
   return (
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
@@ -35,7 +37,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage toast={toast} />} />
             <Route path="/login" element={<Login toast={toast} />} />
-            <Route path='/signup' element={<SignUp toast={toast} />} />
+            <Route path='/signup' element={<SignUp toast={toast} t={t} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
 
