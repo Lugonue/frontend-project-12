@@ -30,6 +30,7 @@ const ChatFrame = () => {
     socket.on("newMessage", (message) => {
       dispatch(addMessage(message));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
