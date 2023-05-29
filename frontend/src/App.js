@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import React from 'react';
+import './i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //components

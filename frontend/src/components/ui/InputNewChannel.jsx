@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import socket from '../../utils/webSocket';
 import { addNewChannel, setActiveChannel } from '../../slices/channelsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useRef } from 'react';
 
 
 
@@ -12,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const InputNewChannel = ({closeHandler}) => {
   const dispatch = useDispatch();
+  
+  const input = useRef(null);
   const channelNames = useSelector(state => state.channels.channels.map(c => c.name));
 
   const formik = useFormik({
@@ -41,6 +44,9 @@ const InputNewChannel = ({closeHandler}) => {
       sendToServer(values.channelName);
   }});
 
+  useEffect(() => {
+    input.current.focus()
+  }, [])
   return (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group className="mb-3">
@@ -48,6 +54,7 @@ const InputNewChannel = ({closeHandler}) => {
          null 
          : <Form.Text className="text-danger">{formik.values.error}</Form.Text>}
         <Form.Control
+          ref={input}
           type="text"
           placeholder="Введите название канала"
           name='channelName'

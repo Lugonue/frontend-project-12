@@ -4,20 +4,20 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { Modal, Button, ButtonGroup } from "react-bootstrap";
 
-import { setActiveChannel, setChannels } from "../slices/channelsSlice";
-import { setMessages } from "../slices/messagesSlice";
+import { setActiveChannel, setChannels } from "../../slices/channelsSlice";
+import { setMessages } from "../../slices/messagesSlice";
 
-import ChatFrame from "./ui/ChatFrame";
-import InputMessage from "./ui/InputMessage";
-import InputNewChannel from "./ui/InputNewChannel";
-import EditChannelDropDown from "./ui/EditChannelDropDown";
-import Header from "./ui/Header";
+import ChatFrame from "../ui/ChatFrame";
+import InputNewChannel from "../ui/InputNewChannel";
+import EditChannelDropDown from "../ui/EditChannelDropDown";
+import Header from "../ui/Header";
 
-import socket from "../utils/webSocket";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const channels = useSelector((state) => state.channels);
   
@@ -56,9 +56,7 @@ const HomePage = () => {
       <div className="container shadow-sm h-100">
         <div className="row h-100 bg-white flex-md-row">
           <div className="d-flex flex-column h-100">
-
             <Header />
-
             <div className="container h-100 my-4 overflow-hidden rounded shadow">
               <div className="row h-100 bg-white flex-md-row">
                 <div
@@ -66,7 +64,7 @@ const HomePage = () => {
                   id="channels"
                 >
                   <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-                    <b>Каналы</b>
+                    <b>{t("Каналы")}</b>
                     <button
                       type="button"
                       className="p-0 text-primary btn btn-group-vertical"
@@ -118,7 +116,7 @@ const HomePage = () => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Добавить канал</Modal.Title>
+          <Modal.Title>{t("Добавить канал")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <InputNewChannel closeHandler={handleClose} />

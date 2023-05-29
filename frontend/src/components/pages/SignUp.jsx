@@ -8,12 +8,14 @@ import { useDispatch } from "react-redux";
 
 import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
 import Header from "../ui/Header";
+import { useTranslation } from "react-i18next";
 
 
 const SignUp = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [errorMsg, setErrorMsg] = useState(false);
 
@@ -66,7 +68,7 @@ const SignUp = () => {
         <Header />
         <div className="col-12 col-md-8 col-xxl-6">
           <div className="card shadow-sm">
-            <h3 className="card-header text-center">Регистрация</h3>
+            <h3 className="card-header text-center">{t('Регистрация')}</h3>
             <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <div className="col-6">
                 <div className="h-100">
@@ -78,7 +80,7 @@ const SignUp = () => {
                 <div className="">
                   <Form onSubmit={formik.handleSubmit}>
                     <Form.Group className="d-flex flex-column">
-                      {formik.errors.username ? <Form.Text className="text-danger">{formik.errors.username}</Form.Text> : <Form.Text>Имя</Form.Text>}
+                      {formik.errors.username ? <Form.Text className="text-danger">{formik.errors.username}</Form.Text> : <Form.Text>{t('Имя пользователя')}</Form.Text>}
                       <Form.Control
                         id="username"
                         className="form-floating mb-4"
@@ -89,7 +91,7 @@ const SignUp = () => {
                       />
                     </Form.Group>
                     <Form.Group className="d-flex flex-column">
-                      {formik.errors.password ? <Form.Text className="text-danger">{formik.errors.password}</Form.Text> : <Form.Text>Пароль</Form.Text>}
+                      {formik.errors.password ? <Form.Text className="text-danger">{formik.errors.password}</Form.Text> : <Form.Text>{t('Пароль')}</Form.Text>}
                       <Form.Control
                         id="password"
                         className="form-floating mb-2"
@@ -100,7 +102,7 @@ const SignUp = () => {
                       />
                     </Form.Group>
                     <Form.Group className="d-flex flex-column">
-                      {formik.errors.confirmPassword ? <Form.Text className="text-danger">{formik.errors.confirmPassword}</Form.Text> : <Form.Text>Подтверждение</Form.Text>}
+                      {formik.errors.confirmPassword ? <Form.Text className="text-danger">{formik.errors.confirmPassword}</Form.Text> : <Form.Text>{t('Повторите пароль')}</Form.Text>}
                       <Form.Control
                         id="confirmPassword"
                         className="form-floating mb-4"

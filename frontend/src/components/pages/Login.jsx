@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import '../../styles/login.css';
 
+import { useTranslation } from "react-i18next";
 
 import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
 import Header from '../ui/Header';
@@ -16,6 +17,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const schema = yup.object().shape({ //valudation shema for formik
     name: yup.string().required('Name is required'),
@@ -69,18 +71,18 @@ const Login = () => {
       <div className="row h-100 align-items-start">
         <Header />
         <div className="col-4 text-center">
-          <h4 className="mb-5">Нет аккаунта?</h4>
+          <h4 className="mb-5">{t('Нет аккаунта')}</h4>
           <Button
             variant="outline-secondary"
             onClick={() => navigate('/signup')}
           >
-            Зарегистрироваться
+            {t('Зарегистрироваться')}
           </Button>
         </div>
         <Form onSubmit={formik.handleSubmit} className='col-5 shadow-sm p-4'>
-          <Form.Text>Введите имя пользователя и пароль</Form.Text>
+          <Form.Text>{t("логин форма")}</Form.Text>
           <Form.Group className="mb-3" >
-            <Form.Label className='text-muted'>Input your name</Form.Label>
+            <Form.Label className='text-muted'>{t('введите имя')}</Form.Label>
             <Form.Control
               type="text"
               id="name"
@@ -94,7 +96,7 @@ const Login = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" >
-            <Form.Label className='text-muted'> Input your password</Form.Label>
+            <Form.Label className='text-muted'>{t('введите пароль')}</Form.Label>
             <Form.Control
               type="password"
               id="password"
@@ -108,7 +110,7 @@ const Login = () => {
           </Form.Group>
           <Form.Group className="w-100 text-end">
             <Button variant="secondary" type="submit">
-              Submit
+              {t('Подтвердить')}
             </Button>
           </Form.Group>
           {responsState.status && <div className='alert text-danger'>{responsState.message}</div>}

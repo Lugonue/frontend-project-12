@@ -6,7 +6,7 @@ const NotFound = () => {
     <div className="conatainer-fluid h-100">
       <div className="row h-100">
         <Header />
-        <h1>Not Found</h1>
+        <h1 className="text-center mt-auto mb-auto h-100">Not Found</h1>
       </div>
 
 
