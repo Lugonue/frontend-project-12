@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, ButtonGroup, Dropdown, Modal, Form } from "react-bootstrap";
 import socket from "../../utils/webSocket";
-import { useDispatch } from "react-redux";
 import { removeChannel, renameChannel, setActiveChannel } from "../../slices/channelsSlice";
 import { removeMessagesInCHannel } from "../../slices/messagesSlice";
 
-const EditChannelDropDown = ({ channel }) => {
+const EditChannelDropDown = ({ channel, toast, t, dispatch }) => {
   const inputRef = useRef(null);
-  const dispatch = useDispatch();
   const [channelName, setChannelName] = useState(channel.name);
 
   const [show, setShow] = useState({
@@ -83,9 +81,11 @@ const EditChannelDropDown = ({ channel }) => {
                 }, (response) => {
                   if (response.status !== 'ok') {
                     renameChannelServer();
+                    toast.error( t("Не удалось переименовать канал!"));
                   } else {
                     dispatch(renameChannel({ id: channel.id, name: channelName }));
                     handleClose();
+                    toast.success(t("Канал успешно переименован!"));
                   }
                  })
               }
@@ -130,11 +130,13 @@ const EditChannelDropDown = ({ channel }) => {
                     (response) => {
                       if (response.status !== "ok") {
                         removeChannelServer();
+                        toast.error(t("Не удалось удалить канал!"));
                       } else {
                         handleClose();
                         dispatch(removeChannel(channel.id));
                         dispatch(removeMessagesInCHannel(channel.id));
                         dispatch(setActiveChannel({name: 'general', id: 1}));
+                        toast.success("Канал успешно удален!");
                       }
                     }
                   );

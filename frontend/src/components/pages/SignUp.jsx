@@ -11,13 +11,11 @@ import Header from "../ui/Header";
 import { useTranslation } from "react-i18next";
 
 
-const SignUp = () => {
+const SignUp = ({ toast }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const [errorMsg, setErrorMsg] = useState(false);
 
   const schema = yup.object().shape({ //valudation shema for formik
     username: yup.string().required('Name is required').min(3, 'Name must be at least 3 characters long').max(20, 'Name must be at most 20 characters long'),
@@ -46,17 +44,16 @@ const SignUp = () => {
           // регистрация нового пользователя. Добавляем токен и переходим на главную страницу
           dispatch(setAuthorized(true));
           dispatch(setCurrentUser({ name: data.username }));
+          toast.success(t('Регистрация прошла успешно'));
           navigate('/');
 
+
         } catch (e) {
-          if (e.response.status === 409)
-            setErrorMsg('Пользователь с таким именем уже существует');
-          setTimeout(() => {
-            setErrorMsg(false);
-          }, 5000);
+          if (e.response.status === 409) {
+            toast.error(t('Пользователь с таким именем уже существует'));
+          }
         }
       }
-
       sendToServer(values);
     }
   }
@@ -116,14 +113,13 @@ const SignUp = () => {
                       <Button
                         className="btn btn-secondary p-2 "
                         type="submit"
-                        disabled={!formik.isValid || errorMsg}
+                        disabled={!formik.isValid}
                         variant="primary"
                         onClick={formik.handleSubmit}
                       >
                         Отправить
                       </Button>
                     </Form.Group>
-                    {errorMsg && <Form.Text className="text-danger mt-2">{errorMsg}</Form.Text>}
                   </Form>
                 </div>
               </div>

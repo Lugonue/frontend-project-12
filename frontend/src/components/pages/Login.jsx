@@ -13,7 +13,7 @@ import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
 import Header from '../ui/Header';
 
 
-const Login = () => {
+const Login = ({ toast }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,15 +53,18 @@ const Login = () => {
 
         //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
         dispatch(setAuthorized(true));
+        toast.success(t('Вы успешно авторизовались'));
         dispatch(setCurrentUser({ name: response.data.username }));
         navigate('/');
 
       } catch (error) {
-        if (error.response.status === 401)
+        if (error.response.status === 401) {
+          toast.error(t('Неверный логин или пароль'));
           setResponsState({
             status: true,
             message: 'Неверный логин или пароль',
           })
+        }
       }
     },
   })

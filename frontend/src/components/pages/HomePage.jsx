@@ -14,7 +14,7 @@ import Header from "../ui/Header";
 
 import { useTranslation } from "react-i18next";
 
-const HomePage = () => {
+const HomePage = ({toast}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ const HomePage = () => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    if (!token || !isAuthorized) {
+    if (!token && !isAuthorized) {
       navigate("/login");
     } else {
       const fetchChanels = async () => {
@@ -96,8 +96,11 @@ const HomePage = () => {
                           </button>
                           {channel.removable && (
                             <EditChannelDropDown
+                            dispatch={dispatch}
+                              toast={toast}
                               channel={channel}
                               handleShow={handleShow}
+                              t={t}
                             />
                           )}
                         </div>
@@ -119,9 +122,10 @@ const HomePage = () => {
           <Modal.Title>{t("Добавить канал")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <InputNewChannel closeHandler={handleClose} />
+          <InputNewChannel toast={toast} closeHandler={handleClose} />
         </Modal.Body>
       </Modal>
+
     </div>
   );
 };
