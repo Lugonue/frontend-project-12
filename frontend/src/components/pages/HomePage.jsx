@@ -65,6 +65,7 @@ const HomePage = ({toast}) => {
     socket.on("removeChannel", (payload) => {
       dispatch(removeChannel({payload}));
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
