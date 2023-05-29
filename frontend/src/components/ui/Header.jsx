@@ -26,23 +26,25 @@ const Header = () => {
             className="btn"
             variant="light"
             onClick={() => navigate("/")}
-          >Hexlet-chat</h2>
+          >
+            Hexlet Chat
+          </h2>
 
           {isAuthorized ?
-           <p className="m-0 text-info fs-5 fw-bold">{activeUserName}</p>
-           
-            : 
+            <p className="m-0 text-info fs-5 fw-bold">{activeUserName}</p>
+
+            :
             null}
 
-          {isAuthorized ? 
-           <Button
-           type="button"
-           variant="outline-primary"
-           onClick={logoutHandler}
-         >
-           Выйти
-         </Button>
-           : 
+          {isAuthorized ?
+            <Button
+              type="button"
+              variant="outline-primary"
+              onClick={logoutHandler}
+            >
+              Выйти
+            </Button>
+            :
             null}
         </div>
       </div>
