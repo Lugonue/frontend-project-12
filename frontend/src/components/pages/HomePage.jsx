@@ -13,6 +13,7 @@ import EditChannelDropDown from "../ui/EditChannelDropDown";
 import Header from "../ui/Header";
 
 import { useTranslation } from "react-i18next";
+import { setAuthorized } from "../../slices/stateSlice";
 
 const HomePage = ({toast}) => {
   const dispatch = useDispatch();
@@ -31,18 +32,16 @@ const HomePage = ({toast}) => {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    if (!token && !isAuthorized) {
+    if (!token) {
       navigate("/login");
     } else {
+      dispatch(setAuthorized(true));
       const fetchChanels = async () => {
         const { data } = await axios.get("/api/v1/data", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        // console.log(data.channels[0]);
-
         dispatch(setChannels(data.channels));
         dispatch(setActiveChannel(data.channels[0]));
         dispatch(setMessages(data.messages));

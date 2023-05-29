@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 import React from 'react';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 
 import './i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,35 +16,45 @@ import SignUp from './components/pages/SignUp';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
+const rollbarConfig = {
+  accessToken: '108b93124c1146cd9b0e9b7a71fdc335',
+  environment: 'production',
+};
+
+
 function App() {
-  const [auth, setAuth] = useState(false);
-  const value = {
-    authorized: auth,
-    setAuth: setAuth
-  }
+  // const [auth, setAuth] = useState(false);
+  // const value = {
+  //   authorized: auth,
+  //   setAuth: setAuth
+  // }
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage toast={toast} />} />
-        <Route path="/login" element={<Login toast={toast} />} />
-        <Route path='/signup' element={<SignUp toast={toast} />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+    <Provider config={rollbarConfig}>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage toast={toast} />} />
+            <Route path="/login" element={<Login toast={toast} />} />
+            <Route path='/signup' element={<SignUp toast={toast} />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
 
-    </BrowserRouter>
+        </BrowserRouter>
+      </ErrorBoundary>
+    </Provider>
   );
 }
 
