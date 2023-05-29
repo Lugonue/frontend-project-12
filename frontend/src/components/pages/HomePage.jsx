@@ -13,7 +13,10 @@ import EditChannelDropDown from "../ui/EditChannelDropDown";
 import Header from "../ui/Header";
 
 import { useTranslation } from "react-i18next";
-import { setAuthorized } from "../../slices/stateSlice";
+import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
+import socket from "../../utils/webSocket";
+import { removeChannel } from "../../slices/channelsSlice";
+import { addNewChannel } from "../../slices/channelsSlice";
 
 const HomePage = ({toast}) => {
   const dispatch = useDispatch();
@@ -24,6 +27,7 @@ const HomePage = ({toast}) => {
   
 
   const token = localStorage.getItem("token");
+
   const isAuthorized = useSelector((state) => state.userState.authorized);
 
   //модальные окна
@@ -35,6 +39,7 @@ const HomePage = ({toast}) => {
     if (!token) {
       navigate("/login");
     } else {
+      dispatch(setCurrentUser({ name: localStorage.getItem("username") }));
       dispatch(setAuthorized(true));
       const fetchChanels = async () => {
         const { data } = await axios.get("/api/v1/data", {
@@ -45,11 +50,22 @@ const HomePage = ({toast}) => {
         dispatch(setChannels(data.channels));
         dispatch(setActiveChannel(data.channels[0]));
         dispatch(setMessages(data.messages));
+        
       };
       fetchChanels();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthorized]);
+
+  useEffect(() => {
+    socket.on("newChannel", (payload) => {
+      dispatch(addNewChannel(payload));
+      console.log(payload);
+    })
+    socket.on("removeChannel", (payload) => {
+      dispatch(removeChannel({payload}));
+    })
+  }, [])
 
   return (
     <div className="h-100">

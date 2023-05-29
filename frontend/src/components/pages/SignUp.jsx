@@ -38,6 +38,8 @@ const SignUp = ({ toast, t }) => {
 
           // регистрация нового пользователя. Добавляем токен и переходим на главную страницу
           localStorage.setItem('token', data.token);
+          localStorage.setItem('username', data.username);
+
           dispatch(setAuthorized(true));
           dispatch(setCurrentUser({ name: data.username }));
           toast.success(t('Регистрация прошла успешно'));

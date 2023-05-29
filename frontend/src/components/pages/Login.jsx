@@ -36,6 +36,7 @@ const Login = ({ toast, t }) => {
 
         //сохраняем токен полученный от сервера в локальное хранилище 
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('username', response.data.username);
 
         //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
         dispatch(setAuthorized(true));
