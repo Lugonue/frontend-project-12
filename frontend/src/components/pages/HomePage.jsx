@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { Modal, Button, ButtonGroup } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 import { setActiveChannel, setChannels } from "../../slices/channelsSlice";
 import { setMessages } from "../../slices/messagesSlice";

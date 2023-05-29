@@ -2,31 +2,22 @@ import * as yup from 'yup';
 import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import '../../styles/login.css';
-
-import { useTranslation } from "react-i18next";
 
 import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
 import Header from '../ui/Header';
 
 
-const Login = ({ toast }) => {
+const Login = ({ toast, t }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t } = useTranslation();
 
   const schema = yup.object().shape({ //valudation shema for formik
     name: yup.string().required('Name is required'),
     password: yup.string().required('Password is required').min(2),
-  });
-
-  const [responsState, setResponsState] = useState({
-    status: false,
-    message: '',
   });
 
 
@@ -46,11 +37,6 @@ const Login = ({ toast }) => {
         //сохраняем токен полученный от сервера в локальное хранилище 
         localStorage.setItem('token', response.data.token);
 
-        setResponsState({
-          status: false,
-          message: '',
-        })
-
         //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
         dispatch(setAuthorized(true));
         toast.success(t('Вы успешно авторизовались'));
@@ -60,10 +46,6 @@ const Login = ({ toast }) => {
       } catch (error) {
         if (error.response.status === 401) {
           toast.error(t('Неверный логин или пароль'));
-          setResponsState({
-            status: true,
-            message: 'Неверный логин или пароль',
-          })
         }
       }
     },
@@ -118,7 +100,6 @@ const Login = ({ toast }) => {
               {t('Войти')}
             </Button>
           </Form.Group>
-          {/* {responsState.status && <div className='alert text-danger'>{responsState.message}</div>} */}
         </Form>
 
       </div>

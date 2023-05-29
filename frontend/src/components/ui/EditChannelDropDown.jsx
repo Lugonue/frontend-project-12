@@ -30,6 +30,7 @@ const EditChannelDropDown = ({ channel, toast, t, dispatch }) => {
           renameChannel: false,
           removeChannel: true,
         });
+        break;
       default:
         break;
     }

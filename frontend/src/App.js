@@ -4,8 +4,6 @@ import React from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import { useTranslation } from "react-i18next";
 
-
-
 import './i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -28,7 +26,7 @@ const rollbarConfig = {
 function App() {
 
   const { t } = useTranslation();
-  
+
 
   return (
     <Provider config={rollbarConfig}>
@@ -36,7 +34,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage toast={toast} />} />
-            <Route path="/login" element={<Login toast={toast} />} />
+            <Route path="/login" element={<Login toast={toast} t={t} />} />
             <Route path='/signup' element={<SignUp toast={toast} t={t} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

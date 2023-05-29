@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import socket from '../../utils/webSocket';
 import { addNewChannel, setActiveChannel } from '../../slices/channelsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 
 
