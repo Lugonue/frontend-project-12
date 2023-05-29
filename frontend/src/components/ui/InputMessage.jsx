@@ -1,14 +1,16 @@
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
-
+import filter from "leo-profanity";
 import socket from "../../utils/webSocket";
-
+// const filter = require('leo-profanity')
 
 
 const InputMessage = () => {
 
-  const channelId = useSelector(state => state.channels.activeChannel.id); 
+  const channelId = useSelector(state => state.channels.activeChannel.id);
   const username = useSelector(state => state.userState.currentUser.name);
+
+  filter.loadDictionary('ru');
 
   const formik = useFormik({
     initialValues: {
@@ -19,10 +21,12 @@ const InputMessage = () => {
       if (values.message.length === 0) return;
 
       const message = {
-        body: values.message,
+        body: filter.clean(values.message),
         channelId,
         username,
       };
+
+      
 
       const sendToServer = (message) => {
         socket.emit('newMessage', message, (response) => {
