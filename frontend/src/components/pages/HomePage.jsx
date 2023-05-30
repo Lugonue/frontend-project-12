@@ -2,39 +2,30 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { Modal } from "react-bootstrap";
+import { Col, Container, Modal, Row } from "react-bootstrap";
 
-import { setActiveChannel, setChannels } from "../../slices/channelsSlice";
+import { actions as channelsActions } from "../../slices/channelsSlice";
 import { setMessages } from "../../slices/messagesSlice";
 
-import ChatFrame from "../ui/ChatFrame";
-import InputNewChannel from "../ui/InputNewChannel";
-import EditChannelDropDown from "../ui/EditChannelDropDown";
-import Header from "../ui/Header";
+import Header from "../regions/Header";
 
 import { useTranslation } from "react-i18next";
 import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
 import socket from "../../utils/webSocket";
-import { removeChannel } from "../../slices/channelsSlice";
-import { addNewChannel } from "../../slices/channelsSlice";
+import ChatComponent from "../regions/ChatComponent.jsx";
+import ModalsWindows from "../modals/index";
+import ChannelsItem from "../regions/ChannelsItem";
+import ChannelsTitle from "../regions/ChannelsTitle";
 
 const HomePage = ({ toast }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const channels = useSelector((state) => state.channels);
-  const activeChannelId = useSelector((state) => state.activeChannel.id);
-
+  const channels = useSelector((state) => state.channels.channels);
+  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
 
   const token = localStorage.getItem("token");
-
-  const isAuthorized = useSelector((state) => state.userState.authorized);
-
-  //модальные окна
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   useEffect(() => {
     if (!token) {
@@ -42,109 +33,45 @@ const HomePage = ({ toast }) => {
     } else {
       dispatch(setCurrentUser({ name: localStorage.getItem("username") }));
       dispatch(setAuthorized(true));
-      const fetchChanels = async () => {
+      const fetchChannels = async () => {
         const { data } = await axios.get("/api/v1/data", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        dispatch(setChannels(data.channels));
-        dispatch(setActiveChannel(data.channels[0]));
+        dispatch(channelsActions.setChannels(data.channels));
+        dispatch(channelsActions.setActiveChannel(data.channels[0]));
         dispatch(setMessages(data.messages));
 
       };
-      fetchChanels();
+      fetchChannels();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthorized]);
-
-  useEffect(() => {
-    socket.on("newChannel", (payload) => {
-      dispatch(addNewChannel(payload));
-      console.log(payload);
-    })
-    socket.on("removeChannel", (payload) => {
-      dispatch(removeChannel({ payload }));
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
-    <div className="h-100">
-      <div className="container shadow-sm h-100">
-        <div className="row h-100 bg-white flex-md-row">
-          <div className="d-flex flex-column h-100">
-            <Header />
-            <div className="container h-100 my-4 overflow-hidden rounded shadow">
-              <div className="row h-100 bg-white flex-md-row">
-                <div
-                  className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex"
-                  id="channels"
-                >
-                  <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-                    <b>{t("Каналы")}</b>
-                    <button
-                      type="button"
-                      className="p-0 text-primary btn btn-group-vertical"
-                      onClick={() => handleShow("addNewChannel")}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <ul className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
-                    {channels.channels.map((channel) => (
-                      <li
-                        className={
-                          "nav-item w-100" +
-                          (channel.id === channels.activeChannel.id
-                            ? " bg-secondary"
-                            : "")
-                        }
-                        key={channel.id}
-                      >
-                        <div className="d-flex show dropdown btn-group">
-                          <button
-                            onClick={() => dispatch(setActiveChannel(channel))}
-                            type="button"
-                            key={channel.id}
-                            className="w-100 rounded-0 text-start btn"
-                          >
-                            <span className="me-1">#</span>
-                            {channel.name}
-                          </button>
-                          {channel.removable && (
-                            <EditChannelDropDown
-                              variant={channel.id === activeChannelId ? 'secondary' : ''}
-                              toast={toast}
-                              channel={channel}
-                              handleShow={handleShow}
-                              t={t}
-                            />
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="col p-0 h-100">
-                  <ChatFrame />
-                </div>
+    <>
+      <div className="d-flex flex-column h-100">
+        <Header />
+        <Container className="h-100 my-4 overflow-hidden rounded shadow">
+          <Row className="h-100 bg-white flex-md-row">
+            <Col xs={4} md={2} className="border-end pt-5 px-0 bg-light">
+              <ChannelsTitle t={t} />
+              {channels.map((channel) => (
+                <ChannelsItem t={t}  key={channel.id} channel={channel}/>
+              ))}
+              
+            </Col>
+            <Col className="p-0 h-100">
+              <div className="d-flex flex-column h-100">
+                < ChatComponent t={t} toast={toast} />
               </div>
-            </div>
-          </div>
-        </div>
+            </Col>
+          </Row>
+        </Container>
       </div>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{t("Добавить канал")}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <InputNewChannel toast={toast} closeHandler={handleClose} t={t} />
-        </Modal.Body>
-      </Modal>
-
-    </div>
+      <ModalsWindows t={t} toast={toast} />
+    </>
   );
 };
 

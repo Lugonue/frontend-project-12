@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Header from "../ui/Header";
+import Header from "../regions/Header";
 import { Image } from "react-bootstrap";
 import image from '../../assets/NotFoundImg.svg';
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
-import Header from "../ui/Header";
+import Header from "../regions/Header";
 import { useRef, useEffect, useState } from "react";
 import routes from "../../routes";
 import image from '../../assets/RegisterImg.jpg';
@@ -19,20 +19,17 @@ const SignUp = ({ toast, t }) => {
 
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const schema = yup.object().shape({ //valudation shema for formik
-    username: yup.string().required('Name is required').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
-    password: yup.string().required('Password is required').min(6, 'Не менее 6 символов'),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Пароли должны совпадать'),
-  });
-
-
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
       confirmPassword: "",
     },
-    validationSchema: schema,
+    validationSchema: yup.object().shape({ //valudation shema for formik
+      username: yup.string().required('Name is required').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
+      password: yup.string().required('Password is required').min(6, 'Не менее 6 символов'),
+      confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Пароли должны совпадать'),
+    }),
     validateOnChange: true,
     onSubmit: (values) => {
       setSubmitting(true);

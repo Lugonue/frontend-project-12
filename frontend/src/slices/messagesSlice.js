@@ -3,7 +3,7 @@ import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 const messagesAdapter = createEntityAdapter();
 const initialState = messagesAdapter.getInitialState();
 
-export const messagesSlice = createSlice({
+const messagesSlice = createSlice({
   name: 'messages',
   initialState,
   reducers: {
@@ -17,5 +17,6 @@ export const messagesSlice = createSlice({
 
 
 export const { addMessage, setMessages, removeMessagesInCHannel } = messagesSlice.actions;
+export const { actions } = messagesSlice;
 
 export default messagesSlice.reducer;

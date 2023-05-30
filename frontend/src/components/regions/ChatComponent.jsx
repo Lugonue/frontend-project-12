@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import socket from "../../utils/webSocket";
 
 import { addMessage } from "../../slices/messagesSlice";
-import InputMessage from "./InputMessage";
+import InputMessage from "../ui/InputMessage";
 
 const Header = ({ messageCount }) => {
-  const channelName = useSelector((state) => state.channels.activeChannel.name);
+  const channelName = useSelector((state) => state.channels.activeChannelName);
 
   return (
     <div className="bg-light mb-4 p-3 shadow-sm small">
@@ -18,11 +18,11 @@ const Header = ({ messageCount }) => {
   );
 };
 
-const ChatFrame = () => {
+const ChatComponent = ({t}) => {
   const dispatch = useDispatch();
   const messages = useSelector((state) =>
     Object.values(state.messages.entities).filter(
-      (m) => m.channelId === state.channels.activeChannel.id
+      (m) => m.channelId === state.channels.activeChannelId
     )
   );
 
@@ -36,9 +36,9 @@ const ChatFrame = () => {
   return (
     <div className="d-flex flex-column h-100">
       <div className="bg-light mb-4 p-3 shadow-sm small">
-      <Header messageCount={messages.length} />
+        <Header messageCount={messages.length} />
       </div>
-      
+
       <div className="chat-messages overflow-auto px-5 h-100 ">
         {messages.map((message) => (
           <div key={message.id} className="d-flex justify-content-start px-2">
@@ -50,10 +50,10 @@ const ChatFrame = () => {
       </div>
 
       <div className="mt-auto px-5">
-        <InputMessage />
+        <InputMessage t={t} />
       </div>
     </div>
   );
 };
 
-export default ChatFrame;
+export default ChatComponent;

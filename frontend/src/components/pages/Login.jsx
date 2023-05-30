@@ -4,11 +4,10 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import '../../styles/login.css';
 import { useEffect, useRef, useState } from 'react';
 
 import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
-import Header from '../ui/Header';
+import Header from '../regions/Header';
 import image from '../../assets/LoginImg.jpg';
 import routes from '../../routes';
 
@@ -24,21 +23,18 @@ const Login = ({ toast, t }) => {
   const [error401, setError401] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
 
-  const schema = yup.object().shape({ //valudation shema for formik
-    name: yup.string().required(t("errors.required")),
-    password: yup.string().required(t("errors.required")),
-  });
-
-
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validationSchema: schema,
-    validateOnChange: false,
+    validationSchema: yup.object().shape({ //valudation shema for formik
+      username: yup.string().required(t("errors.required")),
+      password: yup.string().required(t("errors.required")),
+    }),
+    validateOnChange: true,
     onSubmit: async (values) => {
-      console.log(values);
+      setSubmitting(true);
       try {
         const response = await axios.post(routes.loginPath(), values);
 
@@ -47,9 +43,9 @@ const Login = ({ toast, t }) => {
         localStorage.setItem('username', response.data.username);
 
         //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
-        dispatch(setAuthorized(true));
-        toast.success(t('Вы успешно авторизовались'));
-        dispatch(setCurrentUser({ name: response.data.username }));
+        
+        setSubmitting(false);
+        setError401(false);
         navigate('/');
 
       } catch (error) {
@@ -57,13 +53,14 @@ const Login = ({ toast, t }) => {
           setError401(true);
           toast.error(t('errors.loginError'));
         }
+        setSubmitting(false);
       }
     },
   })
 
   useEffect(() => {
     inputRef.current.focus();
-  }, [])
+  }, []);
 
   return (
     <div className="d-flex flex-column h-100">

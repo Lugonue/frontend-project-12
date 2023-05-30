@@ -34,6 +34,8 @@ export default {
         min3Max20: 'От 3 до 20 символов',
         password: 'Пароли должны совпадать',
         unique: 'Должно быть уникальным',
+        networkError: 'Ошибка соединения',
+        channelExists: 'Канал с таким именем уже существует',
       },
       header: {
         link: 'Hexlet Chat',

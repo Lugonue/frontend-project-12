@@ -1,11 +1,11 @@
 import { useFormik } from 'formik';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Form, Button, FloatingLabel } from 'react-bootstrap';
 
 import socket from '../../utils/webSocket';
-import { addNewChannel, setActiveChannel } from '../../slices/channelsSlice';
+import { actions as channelsActions } from '../../slices/channelsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import * as yup from 'yup';
 
 
 
@@ -13,34 +13,55 @@ const InputNewChannel = ({ closeHandler, toast, t }) => {
   const dispatch = useDispatch();
 
   const input = useRef(null);
+  const [formState, setFormState] = useState({
+    importError: null,
+    buttnDisabled: false,
+  });
   const channelNames = useSelector(state => state.channels.channels.map(c => c.name));
 
   const formik = useFormik({
     initialValues: {
-      channelName: '',
-      error: '',
+      body: '',
+      error: null,
     },
-    onSubmit: (values) => {
-      if (channelNames.includes(values.channelName)) {
-        formik.values.error = 'такой канал уже есть';
+    validationSchema: yup.object({
+      body: yup.string().required(t("errors.required")),
+    }),
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: ({ body }) => {
+
+      setFormState({
+        ...formState,
+        buttnDisabled: true,
+      })
+
+      if (channelNames.includes(body)) {
+        setFormState({
+          ...formState,
+          importError: t("errors.channelExists"),
+        })
         return;
       };
-      const sendToServer = async (channelName) => {
-        await socket.emit('newChannel', { name: values.channelName }, (response) => {
-          if (response.status !== 'ok') {
-            toast.error(t("Ошибка соединения"))
-            sendToServer(channelName)
+      const sendToServer = () => {
+        socket.emit('newChannel', { name: body }, ({ status, data }) => {
+          if (status !== 'ok') {
+            toast.error(t("toastify.error"))
+            sendToServer()
           } else {
-            dispatch(addNewChannel(response.data));
-            dispatch(setActiveChannel(response.data));
+            dispatch(channelsActions.addNewChannel(data));
+            dispatch(channelsActions.setActiveChannel(data));
             closeHandler();
-            formik.values.error = '';
             formik.resetForm();
-            toast(t("Канал создан"));
+            toast(t("toastify.add"));
           }
+          setFormState({
+            importError: null,
+            buttnDisabled: false,
+          })
         })
       }
-      sendToServer(values.channelName);
+      sendToServer();
     }
   });
 
@@ -48,31 +69,42 @@ const InputNewChannel = ({ closeHandler, toast, t }) => {
     input.current.focus()
   }, [])
   return (
-      <Form onSubmit={formik.handleSubmit}>
-        <Form.Group className="mb-3">
-          {formik.values.error === '' ?
-            null
-            : <Form.Text className="text-danger">{formik.values.error}</Form.Text>}
+    <Form onSubmit={formik.handleSubmit}>
+      <Form.Group className="mb-3">
+        {formState.importError && <Form.Text className="text-danger">{formState.importError}</Form.Text>}
+        <FloatingLabel
+          controlId="body"
+          label={t('modal.channelName')}
+          className="mb-4"
+        >
           <Form.Control
             ref={input}
             type="text"
             placeholder="Введите название канала"
-            name='channelName'
-            id='channelName'
+            name='body'
+            id='body'
             onChange={formik.handleChange}
+            isInvalid={formik.values.error}
           />
-        </Form.Group>
+        </FloatingLabel>
 
-        <Form.Group className="d-flex justify-content-end" >
-          <Button variant="secondary" className="me-2" onClick={closeHandler}>
-            Отменить
-          </Button>
-          <Button variant="primary" type="submit">
-            Отправить
-          </Button>
-        </Form.Group>
+      </Form.Group>
 
-      </Form>
+      <Form.Group className="d-flex justify-content-end" >
+        <Button variant="secondary" className="me-2" onClick={closeHandler}>
+          {t("modal.btnCancel")}
+        </Button>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={formState.buttnDisabled}
+        >
+
+          {t("modal.btnSubmit")}
+
+        </Button>
+      </Form.Group>
+    </Form>
   )
 }
 
