@@ -1,16 +1,22 @@
+import { Link } from "react-router-dom";
 import Header from "../ui/Header";
+import { Image } from "react-bootstrap";
+import image from '../../assets/NotFoundImg.svg';
 
 
-const NotFound = () => {
+const NotFound = ({t}) => {
   return (
-    <div className="conatainer-fluid h-100">
-      <div className="row h-100">
-        <Header />
-        <h1 className="text-center mt-auto mb-auto h-100">Not Found</h1>
-      </div>
-
-
+    <div className="d-flex flex-column h-100">
+    <Header />
+    <div className="text-center">
+      <Image className="h-25" fluid src={image} alt={t('notFound.title')} />
+      <h1 className="h4 text-muted">{t('notFound.title')}</h1>
+      <p className="text-muted">
+        {t('notFound.footerFirst')}
+        <Link to="/">{t('notFound.footerSecond')}</Link>
+      </p>
     </div>
+  </div>
 
   )
 }

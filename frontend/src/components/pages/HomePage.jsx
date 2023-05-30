@@ -18,13 +18,14 @@ import socket from "../../utils/webSocket";
 import { removeChannel } from "../../slices/channelsSlice";
 import { addNewChannel } from "../../slices/channelsSlice";
 
-const HomePage = ({toast}) => {
+const HomePage = ({ toast }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const channels = useSelector((state) => state.channels);
-  
+  const activeChannelId = useSelector((state) => state.activeChannel.id);
+
 
   const token = localStorage.getItem("token");
 
@@ -50,7 +51,7 @@ const HomePage = ({toast}) => {
         dispatch(setChannels(data.channels));
         dispatch(setActiveChannel(data.channels[0]));
         dispatch(setMessages(data.messages));
-        
+
       };
       fetchChanels();
     }
@@ -63,7 +64,7 @@ const HomePage = ({toast}) => {
       console.log(payload);
     })
     socket.on("removeChannel", (payload) => {
-      dispatch(removeChannel({payload}));
+      dispatch(removeChannel({ payload }));
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -113,7 +114,7 @@ const HomePage = ({toast}) => {
                           </button>
                           {channel.removable && (
                             <EditChannelDropDown
-                            dispatch={dispatch}
+                              variant={channel.id === activeChannelId ? 'secondary' : ''}
                               toast={toast}
                               channel={channel}
                               handleShow={handleShow}

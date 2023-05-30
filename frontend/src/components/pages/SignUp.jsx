@@ -1,16 +1,23 @@
 import { useFormik } from "formik";
-import { Form, Button, Image } from "react-bootstrap";
+import { Form, Button, Image, FloatingLabel, Card, Row, Container, Col } from "react-bootstrap";
 import * as yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from "react-redux";
 import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
 import Header from "../ui/Header";
+import { useRef, useEffect, useState } from "react";
+import routes from "../../routes";
+import image from '../../assets/RegisterImg.jpg';
 
 const SignUp = ({ toast, t }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const inputRef = useRef();
+
+  const [isSubmitting, setSubmitting] = useState(false);
 
   const schema = yup.object().shape({ //valudation shema for formik
     username: yup.string().required('Name is required').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
@@ -28,13 +35,14 @@ const SignUp = ({ toast, t }) => {
     validationSchema: schema,
     validateOnChange: true,
     onSubmit: (values) => {
+      setSubmitting(true);
       const sendToServer = async (values) => {
         const request = {
           username: values.username,
           password: values.password
         }
         try {
-          const { data } = await axios.post('/api/v1/signup', request);
+          const { data } = await axios.post( routes.signUpPath(), request);
 
           // регистрация нового пользователя. Добавляем токен и переходим на главную страницу
           localStorage.setItem('token', data.token);
@@ -48,8 +56,9 @@ const SignUp = ({ toast, t }) => {
 
         } catch (e) {
           if (e.response.status === 409) {
-            toast.error(t('Пользователь с таким именем уже существует'));
+            toast.error(t('errors.registerError'));
           }
+          setSubmitting(false);
         }
       }
       sendToServer(values);
@@ -57,74 +66,94 @@ const SignUp = ({ toast, t }) => {
   }
   );
 
-  return (
-    <div className="container-fluid bg-light h-100">
-      <div className="row h-100 align-items-start justify-content-center">
-        <Header />
-        <div className="col-12 col-md-8 col-xxl-6">
-          <div className="card shadow-sm">
-            <h3 className="card-header text-center">{t('Регистрация')}</h3>
-            <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-              <div className="col-6">
-                <div className="h-100">
-                  <Image className="img-fluid" src="https://seoquick.com.ua/wp-content/uploads/2020/07/site-registration-in-search-engines.png" />
-                </div>
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [])
 
-              </div>
-              <div className="col-6">
-                <div className="">
-                  <Form onSubmit={formik.handleSubmit}>
-                    <Form.Group className="d-flex flex-column">
-                      {formik.errors.username ? <Form.Text className="text-danger">{formik.errors.username}</Form.Text> : <Form.Text>{t('Имя пользователя')}</Form.Text>}
-                      <Form.Control
-                        id="username"
-                        className="form-floating mb-4"
-                        type="text"
-                        placeholder="Введите имя пользователя"
-                        onChange={formik.handleChange}
-                        value={formik.values.username}
-                      />
-                    </Form.Group>
-                    <Form.Group className="d-flex flex-column">
-                      {formik.errors.password ? <Form.Text className="text-danger">{formik.errors.password}</Form.Text> : <Form.Text>{t('Пароль')}</Form.Text>}
-                      <Form.Control
-                        id="password"
-                        className="form-floating mb-2"
-                        type="password"
-                        placeholder="Введите пароль"
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                      />
-                    </Form.Group>
-                    <Form.Group className="d-flex flex-column">
-                      {formik.errors.confirmPassword ? <Form.Text className="text-danger">{formik.errors.confirmPassword}</Form.Text> : <Form.Text>{t('Повторите пароль')}</Form.Text>}
-                      <Form.Control
-                        id="confirmPassword"
-                        className="form-floating mb-4"
-                        type="password"
-                        placeholder="Повторите пароль"
-                        onChange={formik.handleChange}
-                        value={formik.values.confirmPassword}
-                      />
-                    </Form.Group>
-                    <Form.Group className="w-100 text-end">
-                      <Button
-                        className="btn btn-secondary p-2 "
-                        type="submit"
-                        disabled={!formik.isValid}
-                        variant="primary"
-                        onClick={formik.handleSubmit}
-                      >
-                        {t("Отправить")}
-                      </Button>
-                    </Form.Group>
-                  </Form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  return (
+    <div className="d-flex flex-column h-100">
+      <Header />
+      <Container className="h-100" fluid>
+        <Row className="justify-content-center align-content-center h-100">
+          <Col xs={12} md={8} xxl={6}>
+            <Card className="shadow-sm">
+              <Card.Body as={Row} className="p-5">
+                <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                  <Image roundedCircle src={image} alt={t('register.title')} />
+                </Col>
+                <Col as={Form} xs={12} md={6} className="mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
+                  <h1 className="text-center mb-4">{t('register.title')}</h1>
+                  <FloatingLabel
+                    controlId="username"
+                    label={t('register.username')}
+                    className="mb-3"
+                  >
+                    <Form.Control
+                      required
+                      ref={inputRef}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.username}
+                      name="username"
+                      placeholder={t('register.username')}
+                      isInvalid={formik.errors.username}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.username}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+                  <FloatingLabel
+                    controlId="password"
+                    label={t('register.password')}
+                    className="mb-4"
+                  >
+                    <Form.Control
+                      required
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
+                      name="password"
+                      type="password"
+                      placeholder={t('register.password')}
+                      isInvalid={(formik.errors.password && formik.touched.password)}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.password}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+                  <FloatingLabel
+                    controlId="confirmPassword"
+                    label={t('register.confirmPassword')}
+                    className="mb-4"
+                  >
+                    <Form.Control
+                      required
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.confirmPassword}
+                      name="confirmPassword"
+                      type="password"
+                      placeholder={t('register.confirmPassword')}
+                      isInvalid={formik.errors.confirmPassword}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.confirmPassword || t('errors.registerError')}
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
+                  <Button
+                    type="submit"
+                    className="w-100 mb-3"
+                    variant="outline-primary"
+                    disabled={isSubmitting}
+                  >
+                    {t('register.btn')}
+                  </Button>
+                </Col>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };

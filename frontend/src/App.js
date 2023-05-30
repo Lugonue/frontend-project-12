@@ -36,7 +36,7 @@ function App() {
             <Route path="/" element={<HomePage toast={toast} />} />
             <Route path="/login" element={<Login toast={toast} t={t} />} />
             <Route path='/signup' element={<SignUp toast={toast} t={t} />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFound t={t} />} />
           </Routes>
 
           <ToastContainer
