@@ -26,7 +26,7 @@ const InputMessage = ({ t }) => {
     onSubmit: (values) => {
       setIsSubmitting(true);
       const message = {
-        body: filter.clean(values.message),
+        body: filter.clean(values.body),
         channelId,
         username,
       };
@@ -35,8 +35,10 @@ const InputMessage = ({ t }) => {
           if (response.status !== 'ok') {
             sendToServer(message)
           } else {
+            console.log(message)
             formik.resetForm();
             setIsSubmitting(false);
+
           }
         });
       }
@@ -59,6 +61,8 @@ const InputMessage = ({ t }) => {
             ref={inputRef}
             className="border-0 p-0 ps-2"
             name="body"
+            type="text"
+            id="body"
             placeholder={t('main.chat')}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

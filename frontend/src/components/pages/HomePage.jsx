@@ -23,7 +23,7 @@ const HomePage = ({ toast }) => {
   const { t } = useTranslation();
 
   const channels = useSelector((state) => state.channels.channels);
-  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
+  const isAuthorized = useSelector((state) => state.userState.authorized);
 
   const token = localStorage.getItem("token");
 
@@ -33,6 +33,7 @@ const HomePage = ({ toast }) => {
     } else {
       dispatch(setCurrentUser({ name: localStorage.getItem("username") }));
       dispatch(setAuthorized(true));
+
       const fetchChannels = async () => {
         const { data } = await axios.get("/api/v1/data", {
           headers: {
@@ -47,7 +48,18 @@ const HomePage = ({ toast }) => {
       fetchChannels();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAuthorized]);
+
+useEffect(() => {
+  socket.on("removeChannel", ({id}) => {
+    dispatch(channelsActions.removeChannel(id));
+  })
+
+  socket.on("newChannel", (payload) => {
+    dispatch(channelsActions.addNewChannel(payload));
+  })
+
+},[])
 
   return (
     <>

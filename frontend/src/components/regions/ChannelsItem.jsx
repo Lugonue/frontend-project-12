@@ -14,7 +14,7 @@ const ChannelsItem = ({ channel, t }) => {
   const dispatch = useDispatch();
 
   return (
-    <Nav.Item as="li" className="w-100" key={id}>
+    <Nav.Item as="li" className="w-100 list-unstyled" key={id}>
       {!removable && (
         <Button
           className="w-100 rounded-0 text-start"
@@ -37,7 +37,7 @@ const ChannelsItem = ({ channel, t }) => {
           </Button>
           <Dropdown.Toggle
             split
-            variant={id === channelsActions ? 'secondary' : ''}
+            variant={id === activeChannelId ? 'secondary' : ''}
             className="flex-grow-0"
           >
             <span className="visually-hidden">{t('main.control')}</span>

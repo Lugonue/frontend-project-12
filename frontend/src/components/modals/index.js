@@ -14,11 +14,12 @@ export default ({t, toast}) => {
   const modalState = useSelector((state) => state.modals);
 
 
+
   return (
     <>
-      <AddModal show={modalState.showAddModal} closeHandler={() => dispatch(modalsActions.togleAddModal())} t={t} toast={toast} />
-      <RenameModal show={modalState.showRenameModal} closeHandler={() => dispatch(modalsActions.togleRenameModal())} t={t} toast={toast} />
-      <DeleteModal show={modalState.showDeleteModal} closeHandler={() => dispatch(modalsActions.togleDeleteModal())} t={t} toast={toast} />
+      <AddModal show={modalState.showAddModal} handleClose={() => dispatch(modalsActions.togleAddModal())} t={t} toast={toast} />
+      <RenameModal show={modalState.showRenameModal} handleClose={() => dispatch(modalsActions.togleRenameModal(modalState.renameChannelId))} t={t} toast={toast} />
+      <DeleteModal show={modalState.showDeleteModal} handleClose={() => dispatch(modalsActions.togleDeleteModal(modalState.deleteChannelId))} t={t} toast={toast} />
     </>
 
   )

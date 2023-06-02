@@ -11,7 +11,8 @@ import {actions as messagesActions} from "../../slices/messagesSlice";
 const DeleteModal = ({ show, handleClose, toast, t }) => {
   const dispatch = useDispatch();
 
-  const deleteChannelId = useSelector((state) => state.channels.deleteChannelId);
+  const deleteChannelId = useSelector((state) => state.modals.deleteChannelId);
+  console.log(deleteChannelId);
 
 
 return (
@@ -36,10 +37,10 @@ return (
                     removeChannelServer();
                     toast.error(t("toastify.error"));
                   } else {
-                    handleClose();
                     dispatch(channelsActions.removeChannel(deleteChannelId));
                     dispatch(messagesActions.removeMessagesInCHannel(deleteChannelId));
                     dispatch(channelsActions.setActiveChannel(1));
+                    handleClose();
                     toast.success(t("toastify.remove"));
                   }
                 }

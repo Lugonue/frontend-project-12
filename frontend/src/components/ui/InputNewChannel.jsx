@@ -9,7 +9,7 @@ import * as yup from 'yup';
 
 
 
-const InputNewChannel = ({ closeHandler, toast, t }) => {
+const InputNewChannel = ({ handleClose, toast, t }) => {
   const dispatch = useDispatch();
 
   const input = useRef(null);
@@ -51,7 +51,7 @@ const InputNewChannel = ({ closeHandler, toast, t }) => {
           } else {
             dispatch(channelsActions.addNewChannel(data));
             dispatch(channelsActions.setActiveChannel(data));
-            closeHandler();
+            handleClose();
             formik.resetForm();
             toast(t("toastify.add"));
           }
@@ -91,7 +91,7 @@ const InputNewChannel = ({ closeHandler, toast, t }) => {
       </Form.Group>
 
       <Form.Group className="d-flex justify-content-end" >
-        <Button variant="secondary" className="me-2" onClick={closeHandler}>
+        <Button variant="secondary" className="me-2" onClick={handleClose}>
           {t("modal.btnCancel")}
         </Button>
         <Button

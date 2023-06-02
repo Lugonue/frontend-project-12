@@ -12,7 +12,7 @@ const AddModal = ({ show, handleClose, toast, t }) => {
         <Modal.Title>{t("modal.add")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <InputNewChannel toast={toast} closeHandler={handleClose} t={t} />
+        <InputNewChannel toast={toast} handleClose={handleClose} t={t} />
       </Modal.Body>
     </Modal>
   )
