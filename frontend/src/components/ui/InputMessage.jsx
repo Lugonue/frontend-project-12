@@ -35,7 +35,6 @@ const InputMessage = ({ t }) => {
           if (response.status !== 'ok') {
             sendToServer(message)
           } else {
-            console.log(message)
             formik.resetForm();
             setIsSubmitting(false);
 
@@ -62,7 +61,7 @@ const InputMessage = ({ t }) => {
             className="border-0 p-0 ps-2"
             name="body"
             type="text"
-            id="body"
+            controlId="body"
             placeholder={t('main.chat')}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

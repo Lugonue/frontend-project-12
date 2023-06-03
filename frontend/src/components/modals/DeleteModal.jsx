@@ -41,7 +41,7 @@ return (
                     dispatch(messagesActions.removeMessagesInCHannel(deleteChannelId));
                     dispatch(channelsActions.setActiveChannel(1));
                     handleClose();
-                    toast.success(t("toastify.remove"));
+                    toast.error(t("toastify.remove"));
                   }
                 }
               );

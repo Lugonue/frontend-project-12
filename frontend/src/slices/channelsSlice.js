@@ -13,6 +13,9 @@ export const channelsSlice = createSlice({
       state.channels = action.payload;
     },
     addNewChannel: (state, action) => {
+      if (state.channels.find(channel => channel.id === action.payload.id)) {
+        return;
+      }
       state.channels.push(action.payload);
     },
     removeChannel: (state, action) => {

@@ -49,7 +49,6 @@ const InputNewChannel = ({ handleClose, toast, t }) => {
             toast.error(t("toastify.error"))
             sendToServer()
           } else {
-            dispatch(channelsActions.addNewChannel(data));
             dispatch(channelsActions.setActiveChannel(data));
             handleClose();
             formik.resetForm();
