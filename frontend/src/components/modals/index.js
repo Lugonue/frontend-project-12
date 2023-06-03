@@ -17,11 +17,10 @@ const IndexModal = ({ t, toast }) => {
     <>
       <AddModal show={modalState.showAddModal} handleClose={() => dispatch(modalsActions.togleAddModal())} t={t} toast={toast} />
       <RenameModal show={modalState.showRenameModal}
-        handleClose={() => dispatch(modalsActions.togleRenameModal({id: null, name: null}))}
+        handleClose={() => dispatch(modalsActions.togleRenameModal({ id: null, name: null }))}
         t={t}
         toast={toast}
-        id={modalState.renameChannelId}
-        name={modalState.renameChannelName} />
+      />
       <DeleteModal show={modalState.showDeleteModal} handleClose={() => dispatch(modalsActions.togleDeleteModal(modalState.deleteChannelId))} t={t} toast={toast} />
     </>
 

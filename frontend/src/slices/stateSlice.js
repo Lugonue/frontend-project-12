@@ -5,7 +5,8 @@ const initialState = {
   token: '',
   currentUser: {
     name: false,
-  }
+  },
+  
 };
 
 const stateSlice = createSlice({

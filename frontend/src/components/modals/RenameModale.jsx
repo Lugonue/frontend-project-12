@@ -3,14 +3,20 @@ import socket from "../../utils/webSocket";
 
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 
-const RenameModal = ({ show, handleClose, toast, t, id, name }) => {
+const RenameModal = ({ show, handleClose, toast, t }) => {
   const inputRef = useRef(null);
+
+  const channelRenameInfo = useSelector((state) => state.channels.channelRenameInfo);
+  const {id, name} = channelRenameInfo;
+  console.log(id, name)
 
   const formik = useFormik({
     initialValues: {
       body: name,
     },
+    enableReinitialize : true,
     onSubmit: ({ body }) => {
       const renameChannelServer = () => {
         socket.emit("renameChannel", {
@@ -33,7 +39,9 @@ const RenameModal = ({ show, handleClose, toast, t, id, name }) => {
     if (inputRef.current !== null) {
       inputRef.current.focus();
     }
+    
   }, [formik])
+
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -56,6 +64,7 @@ const RenameModal = ({ show, handleClose, toast, t, id, name }) => {
               type="text"
               value={formik.values.body}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
           </FloatingLabel>
           <ButtonGroup className="mt-3 text-end">

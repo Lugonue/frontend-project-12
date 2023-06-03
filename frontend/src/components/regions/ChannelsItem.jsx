@@ -44,11 +44,18 @@ const ChannelsItem = ({ channel, t }) => {
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => dispatch(modalsActions.togleDeleteModal(id))}>{t('main.remove')}</Dropdown.Item>
-            <Dropdown.Item onClick={() => dispatch(modalsActions.togleRenameModal({id, name}))}>{t('main.rename')}</Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                dispatch(modalsActions.togleRenameModal());
+                dispatch(channelsActions.setChannelRenameInfo({ id, name }))
+              }}>
+              {t('main.rename')}
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      )}
-    </Nav.Item>
+      )
+      }
+    </Nav.Item >
   )
 }
 

@@ -16,19 +16,13 @@ export const modalsSlice = createSlice({
     togleAddModal: (state) => {
       state.showAddModal = !state.showAddModal;
     },
-    togleRenameModal: (state, action) => {
+    togleRenameModal: (state) => {
       state.showRenameModal = !state.showRenameModal;
-      if (action.payload.id && action.payload.name) {
-        state.renameChannelId = action.payload.id;
-        state.renameChannelName = action.payload.name;
-      }
-      
-
     },
     togleDeleteModal: (state, action) => {
       state.showDeleteModal = !state.showDeleteModal;
       state.deleteChannelId = action.payload;
-      
+
     },
   },
 })
