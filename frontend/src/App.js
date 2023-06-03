@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import React from 'react';
-import { Provider, ErrorBoundary } from '@rollbar/react';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
 
@@ -18,20 +17,20 @@ import SignUp from './components/pages/SignUp';
 // notifications
 import 'react-toastify/dist/ReactToastify.css';
 
-const rollbarConfig = {
-  accessToken: '108b93124c1146cd9b0e9b7a71fdc335',
-  environment: 'production',
-};
+// const rollbarConfig = {
+//   accessToken: '108b93124c1146cd9b0e9b7a71fdc335',
+//   environment: 'production',
+// };
 
-function App() {
+const App = () => {
   const { t } = useTranslation();
 
   filter.add(filter.getDictionary('en'));
   filter.add(filter.getDictionary('ru'));
 
   return (
-    <Provider config={rollbarConfig}>
-      <ErrorBoundary>
+    // <Provider config={rollbarConfig}>
+    //   <ErrorBoundary>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage toast={toast} />} />
@@ -54,9 +53,9 @@ function App() {
           />
 
         </BrowserRouter>
-      </ErrorBoundary>
-    </Provider>
+    //   </ErrorBoundary>
+    // </Provider>
   );
-}
+};
 
 export default App;

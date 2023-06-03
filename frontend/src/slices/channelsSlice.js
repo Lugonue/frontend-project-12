@@ -12,9 +12,7 @@ export const channelsSlice = createSlice({
     },
   },
   reducers: {
-    setChannels: (state, action) => {
-      state.channels = action.payload;
-    },
+    setChannels: (state, action) => ({ ...state, channels: action.payload }),
     addNewChannel: (state, action) => {
       if (state.channels.find((channel) => channel.id === action.payload.id)) {
         return;
@@ -22,21 +20,28 @@ export const channelsSlice = createSlice({
       state.channels.push(action.payload);
     },
     removeChannel: (state, action) => {
+      // eslint-disable-next-line
       state.channels = state.channels.filter((channel) => channel.id !== action.payload);
     },
     renameChannel: (state, action) => {
+      // eslint-disable-next-line
       state.channels = state.channels.map((channel) => {
+
         if (channel.id === action.payload.id) {
+          // eslint-disable-next-line
           channel.name = action.payload.name;
         }
         return channel;
       });
     },
     setChannelRenameInfo: (state, action) => {
+      // eslint-disable-next-line
       state.channelRenameInfo = action.payload;
     },
     setActiveChannel: (state, action) => {
+      // eslint-disable-next-line
       state.activeChannelId = action.payload.id;
+      // eslint-disable-next-line
       state.activeChannelName = action.payload.name;
     },
   },

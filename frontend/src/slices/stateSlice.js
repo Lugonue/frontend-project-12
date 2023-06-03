@@ -14,12 +14,15 @@ const stateSlice = createSlice({
   initialState,
   reducers: {
     setAuthorized: (state, action) => {
+      // eslint-disable-next-line
       state.authorized = action.payload;
     },
     setToken: (state, action) => {
+      // eslint-disable-next-line
       state.token = action.payload;
     },
     setCurrentUser: (state, action) => {
+      // eslint-disable-next-line
       state.currentUser.name = action.payload.name;
     },
   },

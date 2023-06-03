@@ -14,13 +14,17 @@ export const modalsSlice = createSlice({
   initialState,
   reducers: {
     togleAddModal: (state) => {
+      // eslint-disable-next-line
       state.showAddModal = !state.showAddModal;
     },
     togleRenameModal: (state) => {
+      // eslint-disable-next-line
       state.showRenameModal = !state.showRenameModal;
     },
     togleDeleteModal: (state, action) => {
+      // eslint-disable-next-line
       state.showDeleteModal = !state.showDeleteModal;
+      // eslint-disable-next-line
       state.deleteChannelId = action.payload;
     },
   },

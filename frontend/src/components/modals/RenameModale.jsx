@@ -14,7 +14,6 @@ const RenameModal = ({
 
   const channelRenameInfo = useSelector((state) => state.channels.channelRenameInfo);
   const { id, name } = channelRenameInfo;
-  console.log(id, name);
 
   const formik = useFormik({
     initialValues: {
@@ -64,7 +63,6 @@ const RenameModal = ({
               ref={inputRef}
               autoFocus
               name="body"
-              controlId="floatingInput"
               type="text"
               value={formik.values.body}
               onChange={formik.handleChange}

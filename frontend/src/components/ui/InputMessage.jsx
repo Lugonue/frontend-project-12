@@ -58,7 +58,6 @@ const InputMessage = ({ t }) => {
             className="border-0 p-0 ps-2"
             name="body"
             type="text"
-            controlId="body"
             placeholder={t('main.chat')}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}

@@ -10,6 +10,7 @@ const messagesSlice = createSlice({
     addMessage: messagesAdapter.addOne,
     setMessages: messagesAdapter.setAll,
     removeMessagesInCHannel: (state, action) => {
+      // eslint-disable-next-line
       state.entities = Object.values(state.entities).filter((m) => m.channelId !== action.payload);
     },
   },
