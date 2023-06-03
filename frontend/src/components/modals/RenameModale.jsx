@@ -55,7 +55,7 @@ const RenameModal = ({ show, handleClose, toast, t }) => {
         >
           <FloatingLabel
             controlId="floatingInput"
-            label={t("modal.rename")}
+            label={t("modal.channelName")}
           >
             <Form.Control
               ref={inputRef}
