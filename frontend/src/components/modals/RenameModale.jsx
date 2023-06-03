@@ -38,9 +38,10 @@ const RenameModal = ({ show, handleClose, toast, t }) => {
   useEffect(() => {
     if (inputRef.current !== null) {
       inputRef.current.focus();
+      inputRef.current.select();
     }
     
-  }, [formik])
+  }, [inputRef.current])
 
 
   return (
