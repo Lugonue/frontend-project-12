@@ -3,10 +3,8 @@ import { Form, Button, Image, FloatingLabel, Card, Row, Container, Col } from 'r
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 
-import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
 import Header from '../regions/Header';
 import image from '../../assets/LoginImg.jpg';
 import routes from '../../routes';
@@ -17,7 +15,6 @@ import routes from '../../routes';
 const Login = ({ toast, t }) => {
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const inputRef = useRef();
   const [error401, setError401] = useState(false);

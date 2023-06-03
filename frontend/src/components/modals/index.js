@@ -1,15 +1,13 @@
 import AddModal from "./AddChannel";
 import DeleteModal from "./DeleteModal";
 import RenameModal from "./RenameModale";
-import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions as modalsActions } from "../../slices/modalsSlice";
 
 
 
 
-export default ({t, toast}) => {
-
+ const IndexModal = ({t, toast}) => {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modals);
 
@@ -24,4 +22,7 @@ export default ({t, toast}) => {
 
   )
 
-}
+};
+
+
+export default IndexModal;

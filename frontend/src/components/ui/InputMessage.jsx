@@ -14,7 +14,8 @@ const InputMessage = ({ t }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef(null);
-  filter.loadDictionary('ru');
+
+  
 
   const formik = useFormik({
     initialValues: {

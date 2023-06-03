@@ -11,11 +11,13 @@ import { useEffect, useRef } from "react";
 const RenameModal = ({ show, handleClose, toast, t }) => {
   const inputRef = useRef(null);
   const dispatch = useDispatch();
-  const renameChannelId = useSelector((state) => state.channels.renameChannelId);
+  const renameChannelId = useSelector((state) => state.modals.renameChannelId);
+  const nameChannel = useSelector((state) => state.channels.channels.filter((channel) => channel.id === renameChannelId)[0].name);
+  console.log(nameChannel, renameChannelId);
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      body: nameChannel,
     },
     onSubmit: ({ body }) => {
       const renameChannelServer = () => {
@@ -27,7 +29,7 @@ const RenameModal = ({ show, handleClose, toast, t }) => {
             renameChannelServer();
           } else {
             dispatch(channelsActions.renameChannel({ id: renameChannelId, name: body }));
-            toast.success(t("modal.rename"));
+            toast.success(t("toastify.rename"));
             handleClose();
           }
         })
@@ -35,6 +37,12 @@ const RenameModal = ({ show, handleClose, toast, t }) => {
       renameChannelServer();
     },
   })
+
+  useEffect(() => {
+    if (inputRef.current !== null) {
+      inputRef.current.focus();
+    }
+  }, [formik])
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -47,10 +55,11 @@ const RenameModal = ({ show, handleClose, toast, t }) => {
         >
           <FloatingLabel
             controlId="floatingInput"
-            label={t("modal.name")}
+            label={t("modal.rename")}
           >
             <Form.Control
-              autoFocus 
+              ref={inputRef}
+              autoFocus
               name="body"
               id="floatingInput"
               type="text"

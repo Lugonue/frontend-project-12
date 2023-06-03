@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React from 'react';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import { useTranslation } from "react-i18next";
+import filter from "leo-profanity";
 
 import './i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,6 +27,9 @@ const rollbarConfig = {
 function App() {
 
   const { t } = useTranslation();
+
+  filter.add(filter.getDictionary('en'))
+  filter.add(filter.getDictionary('ru'))
 
 
   return (

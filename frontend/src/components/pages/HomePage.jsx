@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { Col, Container, Modal, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 
 import { actions as channelsActions } from "../../slices/channelsSlice";
 import { setMessages } from "../../slices/messagesSlice";
@@ -58,7 +58,7 @@ useEffect(() => {
   socket.on("newChannel", (payload) => {
     dispatch(channelsActions.addNewChannel(payload));
   })
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
 },[])
 
   return (

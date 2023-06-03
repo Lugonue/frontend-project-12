@@ -1,4 +1,4 @@
-export default {
+const resourse = {
   ru: {
     translation: {
       main: {
@@ -64,4 +64,6 @@ export default {
       },
     },
   }
-}
+};
+
+export default resourse;
