@@ -40,7 +40,7 @@ const Login = ({ toast, t }) => {
         localStorage.setItem('username', response.data.username);
 
         //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
-        
+
         setSubmitting(false);
         setError401(false);
         navigate('/');
@@ -77,6 +77,7 @@ const Login = ({ toast, t }) => {
                     className="mb-3"
                   >
                     <Form.Control
+                      controlId="username"
                       required
                       ref={inputRef}
                       onChange={formik.handleChange}
@@ -93,6 +94,7 @@ const Login = ({ toast, t }) => {
                     className="mb-4"
                   >
                     <Form.Control
+                      controlId="password"
                       required
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}

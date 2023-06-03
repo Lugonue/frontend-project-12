@@ -1,8 +1,5 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import socket from "../../utils/webSocket";
+import { useSelector } from "react-redux";
 
-import { addMessage } from "../../slices/messagesSlice";
 import InputMessage from "../ui/InputMessage";
 
 const Header = ({ messageCount, t }) => {
@@ -25,19 +22,12 @@ const Header = ({ messageCount, t }) => {
 };
 
 const ChatComponent = ({ t }) => {
-  const dispatch = useDispatch();
+
   const messages = useSelector((state) =>
     Object.values(state.messages.entities).filter(
       (m) => m.channelId === state.channels.activeChannelId
     )
   );
-
-  useEffect(() => {
-    socket.on("newMessage", (message) => {
-      dispatch(addMessage(message));
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="d-flex flex-column h-100">

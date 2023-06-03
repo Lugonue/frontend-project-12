@@ -12,7 +12,6 @@ const DeleteModal = ({ show, handleClose, toast, t }) => {
   const dispatch = useDispatch();
 
   const deleteChannelId = useSelector((state) => state.modals.deleteChannelId);
-  console.log(deleteChannelId);
 
 
 return (

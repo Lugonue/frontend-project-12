@@ -1,34 +1,25 @@
 import { Modal, ButtonGroup, Button, Form, FloatingLabel } from "react-bootstrap"
 import socket from "../../utils/webSocket";
-import { useSelector } from "react-redux";
 
-import { useDispatch } from "react-redux";
-
-import { actions as channelsActions } from "../../slices/channelsSlice";
 import { useFormik } from "formik";
 import { useEffect, useRef } from "react";
 
-const RenameModal = ({ show, handleClose, toast, t }) => {
+const RenameModal = ({ show, handleClose, toast, t, id, name }) => {
   const inputRef = useRef(null);
-  const dispatch = useDispatch();
-  const renameChannelId = useSelector((state) => state.modals.renameChannelId);
-  const nameChannel = useSelector((state) => state.channels.channels.filter((channel) => channel.id === renameChannelId)[0].name);
-  console.log(nameChannel, renameChannelId);
 
   const formik = useFormik({
     initialValues: {
-      body: nameChannel,
+      body: name,
     },
     onSubmit: ({ body }) => {
       const renameChannelServer = () => {
         socket.emit("renameChannel", {
-          id: renameChannelId, name: body
+          id, name: body
         }, (response) => {
           if (response.status !== 'ok') {
             toast.error(t("toastify.error"));
             renameChannelServer();
           } else {
-            dispatch(channelsActions.renameChannel({ id: renameChannelId, name: body }));
             toast.success(t("toastify.rename"));
             handleClose();
           }
@@ -61,7 +52,7 @@ const RenameModal = ({ show, handleClose, toast, t }) => {
               ref={inputRef}
               autoFocus
               name="body"
-              id="floatingInput"
+              controlId="floatingInput"
               type="text"
               value={formik.values.body}
               onChange={formik.handleChange}

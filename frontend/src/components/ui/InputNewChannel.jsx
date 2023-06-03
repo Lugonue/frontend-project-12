@@ -81,7 +81,7 @@ const InputNewChannel = ({ handleClose, toast, t }) => {
             type="text"
             placeholder="Введите название канала"
             name='body'
-            id='body'
+            controlId='body'
             onChange={formik.handleChange}
             isInvalid={formik.values.error}
           />

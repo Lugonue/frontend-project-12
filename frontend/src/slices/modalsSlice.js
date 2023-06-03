@@ -4,12 +4,13 @@ const initialState = {
   showAddModal: false,
   showRenameModal: false,
   showDeleteModal: false,
-  deleteChannelId: null,
+  deleteChannelId: '',
+  renameChannelName: null,
   renameChannelId: null,
 };
 
 export const modalsSlice = createSlice({
-  name: 'state',
+  name: 'modals',
   initialState,
   reducers: {
     togleAddModal: (state) => {
@@ -17,12 +18,17 @@ export const modalsSlice = createSlice({
     },
     togleRenameModal: (state, action) => {
       state.showRenameModal = !state.showRenameModal;
-      state.renameChannelId = action.payload;
+      if (action.payload.id && action.payload.name) {
+        state.renameChannelId = action.payload.id;
+        state.renameChannelName = action.payload.name;
+      }
+      
 
     },
     togleDeleteModal: (state, action) => {
       state.showDeleteModal = !state.showDeleteModal;
       state.deleteChannelId = action.payload;
+      
     },
   },
 })

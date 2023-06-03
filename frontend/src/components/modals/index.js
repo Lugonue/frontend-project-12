@@ -7,7 +7,7 @@ import { actions as modalsActions } from "../../slices/modalsSlice";
 
 
 
- const IndexModal = ({t, toast}) => {
+const IndexModal = ({ t, toast }) => {
   const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modals);
 
@@ -16,7 +16,12 @@ import { actions as modalsActions } from "../../slices/modalsSlice";
   return (
     <>
       <AddModal show={modalState.showAddModal} handleClose={() => dispatch(modalsActions.togleAddModal())} t={t} toast={toast} />
-      <RenameModal show={modalState.showRenameModal} handleClose={() => dispatch(modalsActions.togleRenameModal(modalState.renameChannelId))} t={t} toast={toast} />
+      <RenameModal show={modalState.showRenameModal}
+        handleClose={() => dispatch(modalsActions.togleRenameModal({id: null, name: null}))}
+        t={t}
+        toast={toast}
+        id={modalState.renameChannelId}
+        name={modalState.renameChannelName} />
       <DeleteModal show={modalState.showDeleteModal} handleClose={() => dispatch(modalsActions.togleDeleteModal(modalState.deleteChannelId))} t={t} toast={toast} />
     </>
 

@@ -49,6 +49,7 @@ const InputMessage = ({ t }) => {
   useEffect(() => {
     inputRef.current.focus();
   }, [])
+  
   return (
     <div className="mt-auto px-5 py-3">
       <Form

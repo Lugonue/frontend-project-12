@@ -6,16 +6,19 @@ import { Col, Container, Row } from "react-bootstrap";
 
 import { actions as channelsActions } from "../../slices/channelsSlice";
 import { setMessages } from "../../slices/messagesSlice";
+import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
+import { actions as messageActions } from "../../slices/messagesSlice";
 
 import Header from "../regions/Header";
 
 import { useTranslation } from "react-i18next";
-import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
+
 import socket from "../../utils/webSocket";
 import ChatComponent from "../regions/ChatComponent.jsx";
 import ModalsWindows from "../modals/index";
 import ChannelsItem from "../regions/ChannelsItem";
 import ChannelsTitle from "../regions/ChannelsTitle";
+
 
 const HomePage = ({ toast }) => {
   const dispatch = useDispatch();
@@ -53,11 +56,20 @@ const HomePage = ({ toast }) => {
 useEffect(() => {
   socket.on("removeChannel", ({id}) => {
     dispatch(channelsActions.removeChannel(id));
-  })
+  });
 
   socket.on("newChannel", (payload) => {
     dispatch(channelsActions.addNewChannel(payload));
-  })
+  });
+
+  socket.on("renameChannel", ({ id, name, removable }) => {
+    dispatch(channelsActions.renameChannel({ id, name, removable }));
+  });
+
+  socket.on("newMessage", (message) => {
+    dispatch(messageActions.addMessage(message));
+  });
+
 // eslint-disable-next-line react-hooks/exhaustive-deps
 },[])
 
