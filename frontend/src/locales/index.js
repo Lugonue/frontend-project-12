@@ -63,7 +63,7 @@ const resourse = {
         error: 'Ошибка соединения',
       },
     },
-  }
+  },
 };
 
 export default resourse;

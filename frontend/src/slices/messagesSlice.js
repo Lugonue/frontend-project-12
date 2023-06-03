@@ -10,11 +10,10 @@ const messagesSlice = createSlice({
     addMessage: messagesAdapter.addOne,
     setMessages: messagesAdapter.setAll,
     removeMessagesInCHannel: (state, action) => {
-      state.entities = Object.values(state.entities).filter(m => m.channelId !== action.payload);
-    }
+      state.entities = Object.values(state.entities).filter((m) => m.channelId !== action.payload);
+    },
   },
-})
-
+});
 
 export const { addMessage, setMessages, removeMessagesInCHannel } = messagesSlice.actions;
 export const { actions } = messagesSlice;

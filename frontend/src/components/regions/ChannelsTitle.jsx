@@ -1,8 +1,6 @@
 import { Button } from 'react-bootstrap';
-import {actions as modalsActions} from '../../slices/modalsSlice';
 import { useDispatch } from 'react-redux';
-
-
+import { actions as modalsActions } from '../../slices/modalsSlice';
 
 const ChannelsTitle = ({ t }) => {
   const dispatch = useDispatch();
@@ -24,7 +22,7 @@ const ChannelsTitle = ({ t }) => {
         <span className="visually-hidden">+</span>
       </Button>
     </div>
-  )
-}
+  );
+};
 
 export default ChannelsTitle;

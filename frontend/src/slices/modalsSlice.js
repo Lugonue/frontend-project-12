@@ -22,13 +22,9 @@ export const modalsSlice = createSlice({
     togleDeleteModal: (state, action) => {
       state.showDeleteModal = !state.showDeleteModal;
       state.deleteChannelId = action.payload;
-
     },
   },
-})
-
-
-
+});
 
 export const { actions } = modalsSlice;
 export default modalsSlice.reducer;

@@ -6,7 +6,7 @@ const initialState = {
   currentUser: {
     name: false,
   },
-  
+
 };
 
 const stateSlice = createSlice({
@@ -21,12 +21,9 @@ const stateSlice = createSlice({
     },
     setCurrentUser: (state, action) => {
       state.currentUser.name = action.payload.name;
-    }
+    },
   },
-})
-
-
-
+});
 
 export const { setAuthorized, setToken, setCurrentUser } = stateSlice.actions;
 export const { actions } = stateSlice;

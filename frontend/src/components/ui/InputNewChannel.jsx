@@ -1,13 +1,11 @@
 import { useFormik } from 'formik';
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 
-import socket from '../../utils/webSocket';
-import { actions as channelsActions } from '../../slices/channelsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import * as yup from 'yup';
-
-
+import { actions as channelsActions } from '../../slices/channelsSlice';
+import socket from '../../utils/webSocket';
 
 const InputNewChannel = ({ handleClose, toast, t }) => {
   const dispatch = useDispatch();
@@ -17,7 +15,7 @@ const InputNewChannel = ({ handleClose, toast, t }) => {
     importError: null,
     buttnDisabled: false,
   });
-  const channelNames = useSelector(state => state.channels.channels.map(c => c.name));
+  const channelNames = useSelector((state) => state.channels.channels.map((c) => c.name));
 
   const formik = useFormik({
     initialValues: {
@@ -25,48 +23,47 @@ const InputNewChannel = ({ handleClose, toast, t }) => {
       error: null,
     },
     validationSchema: yup.object({
-      body: yup.string().required(t("errors.required")),
+      body: yup.string().required(t('errors.required')),
     }),
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: ({ body }) => {
-
       setFormState({
         ...formState,
         buttnDisabled: true,
-      })
+      });
 
       if (channelNames.includes(body)) {
         setFormState({
           ...formState,
-          importError: t("errors.channelExists"),
-        })
+          importError: t('errors.channelExists'),
+        });
         return;
-      };
+      }
       const sendToServer = () => {
         socket.emit('newChannel', { name: body }, ({ status, data }) => {
           if (status !== 'ok') {
-            toast.error(t("toastify.error"))
-            sendToServer()
+            toast.error(t('toastify.error'));
+            sendToServer();
           } else {
             dispatch(channelsActions.setActiveChannel(data));
             handleClose();
             formik.resetForm();
-            toast(t("toastify.add"));
+            toast(t('toastify.add'));
           }
           setFormState({
             importError: null,
             buttnDisabled: false,
-          })
-        })
-      }
+          });
+        });
+      };
       sendToServer();
-    }
+    },
   });
 
   useEffect(() => {
-    input.current.focus()
-  }, [])
+    input.current.focus();
+  }, []);
   return (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group className="mb-3">
@@ -80,8 +77,8 @@ const InputNewChannel = ({ handleClose, toast, t }) => {
             ref={input}
             type="text"
             placeholder="Введите название канала"
-            name='body'
-            controlId='body'
+            name="body"
+            controlId="body"
             onChange={formik.handleChange}
             isInvalid={formik.values.error}
           />
@@ -89,9 +86,9 @@ const InputNewChannel = ({ handleClose, toast, t }) => {
 
       </Form.Group>
 
-      <Form.Group className="d-flex justify-content-end" >
+      <Form.Group className="d-flex justify-content-end">
         <Button variant="secondary" className="me-2" onClick={handleClose}>
-          {t("modal.btnCancel")}
+          {t('modal.btnCancel')}
         </Button>
         <Button
           variant="primary"
@@ -99,13 +96,12 @@ const InputNewChannel = ({ handleClose, toast, t }) => {
           disabled={formState.buttnDisabled}
         >
 
-          {t("modal.btnSubmit")}
+          {t('modal.btnSubmit')}
 
         </Button>
       </Form.Group>
     </Form>
-  )
-}
-
+  );
+};
 
 export default InputNewChannel;

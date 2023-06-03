@@ -1,17 +1,18 @@
-import { useFormik } from "formik";
-import { Form, Button, Image, FloatingLabel, Card, Row, Container, Col } from "react-bootstrap";
+import { useFormik } from 'formik';
+import {
+  Form, Button, Image, FloatingLabel, Card, Row, Container, Col,
+} from 'react-bootstrap';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from "react-redux";
-import { setAuthorized, setCurrentUser } from "../../slices/stateSlice";
-import Header from "../regions/Header";
-import { useRef, useEffect, useState } from "react";
-import routes from "../../routes";
+import { useDispatch } from 'react-redux';
+import { useRef, useEffect, useState } from 'react';
+import { setAuthorized, setCurrentUser } from '../../slices/stateSlice';
+import Header from '../regions/Header';
+import routes from '../../routes';
 import image from '../../assets/RegisterImg.jpg';
 
 const SignUp = ({ toast, t }) => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,11 +22,11 @@ const SignUp = ({ toast, t }) => {
 
   const formik = useFormik({
     initialValues: {
-      username: "",
-      password: "",
-      confirmPassword: "",
+      username: '',
+      password: '',
+      confirmPassword: '',
     },
-    validationSchema: yup.object().shape({ //valudation shema for formik
+    validationSchema: yup.object().shape({ // valudation shema for formik
       username: yup.string().required('Name is required').min(3, 'От 3 до 20 символов').max(20, 'От 3 до 20 символов'),
       password: yup.string().required('Password is required').min(6, 'Не менее 6 символов'),
       confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Пароли должны совпадать'),
@@ -33,13 +34,13 @@ const SignUp = ({ toast, t }) => {
     validateOnChange: true,
     onSubmit: (values) => {
       setSubmitting(true);
-      const sendToServer = async (values) => {
+      const sendToServer = async () => {
         const request = {
           username: values.username,
-          password: values.password
-        }
+          password: values.password,
+        };
         try {
-          const { data } = await axios.post( routes.signUpPath(), request);
+          const { data } = await axios.post(routes.signUpPath(), request);
 
           // регистрация нового пользователя. Добавляем токен и переходим на главную страницу
           localStorage.setItem('token', data.token);
@@ -49,23 +50,20 @@ const SignUp = ({ toast, t }) => {
           dispatch(setCurrentUser({ name: data.username }));
           toast.success(t('Регистрация прошла успешно'));
           navigate('/');
-
-
         } catch (e) {
           if (e.response.status === 409) {
             toast.error(t('errors.registerError'));
           }
           setSubmitting(false);
         }
-      }
+      };
       sendToServer(values);
-    }
-  }
-  );
+    },
+  });
 
   useEffect(() => {
     inputRef.current.focus();
-  }, [])
+  }, []);
 
   return (
     <div className="d-flex flex-column h-100">

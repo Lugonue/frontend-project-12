@@ -1,15 +1,16 @@
-import filter from "leo-profanity";
-import { useDispatch, useSelector } from "react-redux";
+import filter from 'leo-profanity';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, ButtonGroup, Dropdown, Nav } from "react-bootstrap";
+import {
+  Button, ButtonGroup, Dropdown, Nav,
+} from 'react-bootstrap';
 
-import { actions as channelsActions } from "../../slices/channelsSlice";
-import { actions as modalsActions } from "../../slices/modalsSlice";
-
+import { actions as channelsActions } from '../../slices/channelsSlice';
+import { actions as modalsActions } from '../../slices/modalsSlice';
 
 const ChannelsItem = ({ channel, t }) => {
   const { id, name, removable } = channel;
-  const activeChannelId = useSelector(state => state.channels.activeChannelId);
+  const activeChannelId = useSelector((state) => state.channels.activeChannelId);
 
   const dispatch = useDispatch();
 
@@ -47,16 +48,16 @@ const ChannelsItem = ({ channel, t }) => {
             <Dropdown.Item
               onClick={() => {
                 dispatch(modalsActions.togleRenameModal());
-                dispatch(channelsActions.setChannelRenameInfo({ id, name }))
-              }}>
+                dispatch(channelsActions.setChannelRenameInfo({ id, name }));
+              }}
+            >
               {t('main.rename')}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      )
-      }
-    </Nav.Item >
-  )
-}
+      )}
+    </Nav.Item>
+  );
+};
 
 export default ChannelsItem;

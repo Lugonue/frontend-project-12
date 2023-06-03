@@ -12,6 +12,6 @@ const store = configureStore({
     userState: stateReducer,
     modals: modalReducer,
   },
-})
+});
 
 export default store;

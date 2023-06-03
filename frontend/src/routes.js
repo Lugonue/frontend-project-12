@@ -6,5 +6,4 @@ const routes = {
   signUpPath: () => [apiPath, 'signup'].join('/'),
 };
 
-
 export default routes;

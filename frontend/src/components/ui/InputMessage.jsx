@@ -1,28 +1,24 @@
-import { useFormik } from "formik";
-import { useSelector } from "react-redux";
-import { InputGroup, Form, Button } from "react-bootstrap";
-import { useEffect, useRef, useState } from "react";
-import filter from "leo-profanity";
-import socket from "../../utils/webSocket";
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
+import { InputGroup, Form, Button } from 'react-bootstrap';
+import { useEffect, useRef, useState } from 'react';
+import filter from 'leo-profanity';
 import * as yup from 'yup';
-
+import socket from '../../utils/webSocket';
 
 const InputMessage = ({ t }) => {
-
-  const channelId = useSelector(state => state.channels.activeChannelId);
-  const username = useSelector(state => state.userState.currentUser.name);
+  const channelId = useSelector((state) => state.channels.activeChannelId);
+  const username = useSelector((state) => state.userState.currentUser.name);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef(null);
-
-  
 
   const formik = useFormik({
     initialValues: {
       body: '',
     },
     validationSchema: yup.object({
-      body: yup.string().required(t("required")),
+      body: yup.string().required(t('required')),
     }),
     onSubmit: (values) => {
       setIsSubmitting(true);
@@ -31,25 +27,24 @@ const InputMessage = ({ t }) => {
         channelId,
         username,
       };
-      const sendToServer = (message) => {
+      const sendToServer = () => {
         socket.emit('newMessage', message, (response) => {
           if (response.status !== 'ok') {
-            sendToServer(message)
+            sendToServer();
           } else {
             formik.resetForm();
             setIsSubmitting(false);
-
           }
         });
-      }
+      };
       sendToServer(message);
     },
-  })
+  });
 
   useEffect(() => {
     inputRef.current.focus();
-  }, [])
-  
+  }, []);
+
   return (
     <div className="mt-auto px-5 py-3">
       <Form
@@ -84,7 +79,7 @@ const InputMessage = ({ t }) => {
         </InputGroup>
       </Form>
     </div>
-  )
-}
+  );
+};
 
 export default InputMessage;

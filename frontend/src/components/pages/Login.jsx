@@ -1,5 +1,7 @@
 import * as yup from 'yup';
-import { Form, Button, Image, FloatingLabel, Card, Row, Container, Col } from 'react-bootstrap';
+import {
+  Form, Button, Image, FloatingLabel, Card, Row, Container, Col,
+} from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,11 +11,7 @@ import Header from '../regions/Header';
 import image from '../../assets/LoginImg.jpg';
 import routes from '../../routes';
 
-
-
-
-const Login = ({ toast, t }) => {
-
+const Login = ({ t }) => {
   const navigate = useNavigate();
 
   const inputRef = useRef();
@@ -25,9 +23,9 @@ const Login = ({ toast, t }) => {
       username: '',
       password: '',
     },
-    validationSchema: yup.object().shape({ //valudation shema for formik
-      username: yup.string().required(t("errors.required")),
-      password: yup.string().required(t("errors.required")),
+    validationSchema: yup.object().shape({ // valudation shema for formik
+      username: yup.string().required(t('errors.required')),
+      password: yup.string().required(t('errors.required')),
     }),
     validateOnChange: true,
     onSubmit: async (values) => {
@@ -35,16 +33,16 @@ const Login = ({ toast, t }) => {
       try {
         const response = await axios.post(routes.loginPath(), values);
 
-        //сохраняем токен полученный от сервера в локальное хранилище 
+        // сохраняем токен полученный от сервера в локальное хранилище
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('username', response.data.username);
 
-        //Подтверждаем аторизацию, перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
+        // Подтверждаем аторизацию,
+        // перенаправляем пользователя на стартовую страницу с активными каналами и сообщениями
 
         setSubmitting(false);
         setError401(false);
         navigate('/');
-
       } catch (error) {
         if (error.response.status === 401) {
           setError401(true);
@@ -52,7 +50,7 @@ const Login = ({ toast, t }) => {
         setSubmitting(false);
       }
     },
-  })
+  });
 
   useEffect(() => {
     inputRef.current.focus();
@@ -130,7 +128,7 @@ const Login = ({ toast, t }) => {
       </Container>
     </div>
 
-  )
-}
+  );
+};
 
 export default Login;
