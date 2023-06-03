@@ -51,7 +51,6 @@ const Login = ({ toast, t }) => {
       } catch (error) {
         if (error.response.status === 401) {
           setError401(true);
-          toast.error(t('errors.loginError'));
         }
         setSubmitting(false);
       }
