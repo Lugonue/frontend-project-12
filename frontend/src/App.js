@@ -29,32 +29,32 @@ const App = () => {
   filter.add(filter.getDictionary('ru'));
 
   return (
-    // <Provider config={rollbarConfig}>
-    //   <ErrorBoundary>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<HomePage toast={toast} />} />
-            <Route path="/login" element={<Login toast={toast} t={t} />} />
-            <Route path="/signup" element={<SignUp toast={toast} t={t} />} />
-            <Route path="*" element={<NotFound t={t} />} />
-          </Routes>
+  // <Provider config={rollbarConfig}>
+  //   <ErrorBoundary>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage toast={toast} />} />
+        <Route path="/login" element={<Login toast={toast} t={t} />} />
+        <Route path="/signup" element={<SignUp toast={toast} t={t} />} />
+        <Route path="*" element={<NotFound t={t} />} />
+      </Routes>
 
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
 
-        </BrowserRouter>
-    //   </ErrorBoundary>
-    // </Provider>
+    </BrowserRouter>
+  //   </ErrorBoundary>
+  // </Provider>
   );
 };
 
