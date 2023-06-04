@@ -12,7 +12,3 @@ start-backend:
 
 start:
 	make start-backend & make start-frontend
-
-
-startDev:
-		npx start-server & cd frontend & npm start
