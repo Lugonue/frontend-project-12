@@ -8,9 +8,6 @@
 ## Project Name
 - Hexlet-chat (slack like)
 
-Table of Contents
-Include a table of contents to make it easy for users to navigate your README file.
-
 Installation
 Usage
 Features
