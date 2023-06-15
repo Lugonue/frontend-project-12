@@ -20,6 +20,11 @@ make install    # install deps
 make start      # start server and front of app
 ```
 
+### Docker build
+```
+docker build -t hexletchat .
+docker run --detach --rm --name=hexletchat -p 3000:3000 hexletchat
+```
 
 ### Usage
 
