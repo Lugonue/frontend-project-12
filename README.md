@@ -5,15 +5,13 @@
 
 
 
-## Project Name
-- Hexlet-chat (slack like)
+# Hexlet-chat (slack like)
 
-Installation
-Usage
-Features
+## Running app:
+ https://dev.photo-lead.ru/
 
 
-### Installation
+### Installation&run locally
 
 ```
 make install    # install deps
@@ -30,7 +28,7 @@ docker run --detach --rm --name=hexletchat -p 3000:3000 hexletchat
 
 Main page looks like :
 
- <img src="assets/chat.PNG" width="200" height="auto">
+ <img src="assets/chat.PNG" width="100%" height="auto">
 
 Features:
 
